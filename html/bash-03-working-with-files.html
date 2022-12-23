@@ -13,7 +13,7 @@
 
 <title>Working with Files and Directories</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
@@ -185,8 +185,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -194,16 +194,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -337,27 +330,49 @@ $(document).ready(function () {
 
 <div id="TOC">
 <ul>
-<li><a href="#working-with-files">Working with Files</a>
+<li><a href="#working-with-files" id="toc-working-with-files">Working
+with Files</a>
 <ul>
-<li><a href="#our-data-set-fastq-files">Our data set: FASTQ files</a></li>
-<li><a href="#wildcards">Wildcards</a></li>
+<li><a href="#our-data-set-fastq-files"
+id="toc-our-data-set-fastq-files">Our data set: FASTQ files</a></li>
+<li><a href="#wildcards" id="toc-wildcards">Wildcards</a></li>
 </ul></li>
-<li><a href="#challenge---using-wildcards">Challenge - Using wildcards</a></li>
-<li><a href="#command-history">Command History</a></li>
-<li><a href="#challenge---command-history">Challenge - Command history</a></li>
-<li><a href="#examining-files">Examining Files</a></li>
-<li><a href="#challenge---viewing-file-contents">Challenge - Viewing file contents</a></li>
-<li><a href="#challenge---viewing-file-contents-ii">Challenge - Viewing file contents II</a></li>
-<li><a href="#viewing-part-of-a-fastq-file">Viewing part of a FASTQ file</a></li>
-<li><a href="#creating-moving-copying-and-removing">Creating, moving, copying, and removing</a>
+<li><a href="#challenge---using-wildcards"
+id="toc-challenge---using-wildcards">Challenge - Using
+wildcards</a></li>
+<li><a href="#command-history" id="toc-command-history">Command
+History</a></li>
+<li><a href="#challenge---command-history"
+id="toc-challenge---command-history">Challenge - Command
+history</a></li>
+<li><a href="#examining-files" id="toc-examining-files">Examining
+Files</a></li>
+<li><a href="#challenge---viewing-file-contents"
+id="toc-challenge---viewing-file-contents">Challenge - Viewing file
+contents</a></li>
+<li><a href="#challenge---viewing-file-contents-ii"
+id="toc-challenge---viewing-file-contents-ii">Challenge - Viewing file
+contents II</a></li>
+<li><a href="#viewing-part-of-a-fastq-file"
+id="toc-viewing-part-of-a-fastq-file">Viewing part of a FASTQ
+file</a></li>
+<li><a href="#creating-moving-copying-and-removing"
+id="toc-creating-moving-copying-and-removing">Creating, moving, copying,
+and removing</a>
 <ul>
-<li><a href="#copying-files">Copying Files</a></li>
-<li><a href="#creating-directories">Creating Directories</a></li>
-<li><a href="#moving-renaming">Moving / Renaming</a></li>
-<li><a href="#file-permissions">File Permissions</a></li>
-<li><a href="#removing">Removing</a></li>
+<li><a href="#copying-files" id="toc-copying-files">Copying
+Files</a></li>
+<li><a href="#creating-directories"
+id="toc-creating-directories">Creating Directories</a></li>
+<li><a href="#moving-renaming" id="toc-moving-renaming">Moving /
+Renaming</a></li>
+<li><a href="#file-permissions" id="toc-file-permissions">File
+Permissions</a></li>
+<li><a href="#removing" id="toc-removing">Removing</a></li>
 </ul></li>
-<li><a href="#challenge---working-with-files">Challenge - Working with files</a></li>
+<li><a href="#challenge---working-with-files"
+id="toc-challenge---working-with-files">Challenge - Working with
+files</a></li>
 </ul>
 </div>
 
@@ -400,16 +415,23 @@ keypoints:
 <h2>Working with Files</h2>
 <div id="our-data-set-fastq-files" class="section level3">
 <h3>Our data set: FASTQ files</h3>
-<p>Now that we know how to navigate around our directory structure, let’s start working with our sequencing files. We did a sequencing experiment and have two results files, which are stored in our <code>untrimmed_fastq</code> directory.</p>
+<p>Now that we know how to navigate around our directory structure,
+let’s start working with our sequencing files. We did a sequencing
+experiment and have two results files, which are stored in our
+<code>untrimmed_fastq</code> directory.</p>
 </div>
 <div id="wildcards" class="section level3">
 <h3>Wildcards</h3>
 <p>Navigate to your <code>untrimmed_fastq</code> directory:</p>
 <pre><code>$ cd ~/CF_Shell/untrimmed_fastq</code></pre>
-<p>We are interested in looking at the FASTQ files in this directory. We can list all files with the .fastq extension using the command:</p>
+<p>We are interested in looking at the FASTQ files in this directory. We
+can list all files with the .fastq extension using the command:</p>
 <pre><code>$ ls *.fastq</code></pre>
 <pre><code>sample_01.fastq  sample_02.fastq</code></pre>
-<p>The <code>*</code> character is a special type of character called a wildcard, which can be used to represent any number of any type of character. Thus, <code>*.fastq</code> matches every file that ends with <code>.fastq</code>.</p>
+<p>The <code>*</code> character is a special type of character called a
+wildcard, which can be used to represent any number of any type of
+character. Thus, <code>*.fastq</code> matches every file that ends with
+<code>.fastq</code>.</p>
 <p>This command:</p>
 <pre><code>$ ls *01.fastq</code></pre>
 <pre><code>sample_01.fastq</code></pre>
@@ -417,20 +439,28 @@ keypoints:
 <p>This command:</p>
 <pre><code>$ ls /usr/bin/*.sh</code></pre>
 <pre><code>/usr/bin/gettext.sh  /usr/bin/gvmap.sh</code></pre>
-<p>Lists every file in <code>/usr/bin</code> that ends in the characters <code>.sh</code>. Note that the output displays <strong>full</strong> paths to files, since each result starts with <code>/</code>.</p>
+<p>Lists every file in <code>/usr/bin</code> that ends in the characters
+<code>.sh</code>. Note that the output displays <strong>full</strong>
+paths to files, since each result starts with <code>/</code>.</p>
 <p><br> <br></p>
 </div>
 </div>
 <div id="challenge---using-wildcards" class="section level2">
 <h2>Challenge - Using wildcards</h2>
-<p>Do each of the following tasks from your current directory using a single <code>ls</code> command for each:</p>
+<p>Do each of the following tasks from your current directory using a
+single <code>ls</code> command for each:</p>
 <ol style="list-style-type: decimal">
-<li>List all of the files in <code>/usr/bin</code> that start with the letter ‘c’.</li>
-<li>List all of the files in <code>/usr/bin</code> that contain the letter ‘a’.</li>
-<li>List all of the files in <code>/usr/bin</code> that end with the letter ‘o’.</li>
+<li>List all of the files in <code>/usr/bin</code> that start with the
+letter ‘c’.</li>
+<li>List all of the files in <code>/usr/bin</code> that contain the
+letter ‘a’.</li>
+<li>List all of the files in <code>/usr/bin</code> that end with the
+letter ‘o’.</li>
 </ol>
-<p>Bonus: List all of the files in <code>/usr/bin</code> that contain the letter ‘a’ or the letter ‘c’.</p>
-<p>Hint: The bonus question requires a different syntax that we haven’t talked about yet. We’ll discuss it along with the other solutions.</p>
+<p>Bonus: List all of the files in <code>/usr/bin</code> that contain
+the letter ‘a’ or the letter ‘c’.</p>
+<p>Hint: The bonus question requires a different syntax that we haven’t
+talked about yet. We’ll discuss it along with the other solutions.</p>
 <details>
 <summary>
 Solution - Using wildcards
@@ -444,14 +474,23 @@ Solution - Using wildcards
 </details>
 <p><br> <br></p>
 <p>Next we’ll introduce the command <code>echo</code>.</p>
-<p><code>echo</code> is a built-in shell command that writes its arguments, like a line of text to standard output. The <code>echo</code> command can also be used with pattern matching characters, such as wildcard characters.</p>
+<p><code>echo</code> is a built-in shell command that writes its
+arguments, like a line of text to standard output. The <code>echo</code>
+command can also be used with pattern matching characters, such as
+wildcard characters.</p>
 <blockquote>
-<p>Here we will use the <code>echo</code> command to see how the wildcard character is interpreted by the shell.</p>
+<p>Here we will use the <code>echo</code> command to see how the
+wildcard character is interpreted by the shell.</p>
 </blockquote>
 <pre><code>$ echo *.fastq</code></pre>
 <pre><code>sample_01.fastq sample_02.fastq</code></pre>
-<p>The <code>*</code> is expanded to include any file that ends with <code>.fastq</code>. We can see that the output of <code>echo *.fastq</code> is the same as that of <code>ls *.fastq</code>.</p>
-<p>Let’s see what the output looks like if the wildcard could <em>not</em> be matched. Let’s compare the outputs of <code>echo *.missing</code> and <code>ls *.missing</code>.</p>
+<p>The <code>*</code> is expanded to include any file that ends with
+<code>.fastq</code>. We can see that the output of
+<code>echo *.fastq</code> is the same as that of
+<code>ls *.fastq</code>.</p>
+<p>Let’s see what the output looks like if the wildcard could
+<em>not</em> be matched. Let’s compare the outputs of
+<code>echo *.missing</code> and <code>ls *.missing</code>.</p>
 <pre><code>$ echo *.missing</code></pre>
 <pre><code>*.missing</code></pre>
 <pre><code>$ ls *.missing</code></pre>
@@ -460,62 +499,91 @@ Solution - Using wildcards
 </div>
 <div id="command-history" class="section level2">
 <h2>Command History</h2>
-<p>If you want to repeat a command that you’ve run recently, you can access previous commands using the up arrow on your keyboard to go back to the most recent command. Likewise, the down arrow takes you forward in the command history.</p>
+<p>If you want to repeat a command that you’ve run recently, you can
+access previous commands using the up arrow on your keyboard to go back
+to the most recent command. Likewise, the down arrow takes you forward
+in the command history.</p>
 <p>A few more useful shortcuts:</p>
 <ul>
-<li><kbd>Ctrl</kbd>+<kbd>C</kbd> will cancel the command you are writing, and give you a fresh prompt.</li>
-<li><kbd>Ctrl</kbd>+<kbd>R</kbd> will do a reverse-search through your command history. This is very useful.</li>
-<li><kbd>Ctrl</kbd>+<kbd>L</kbd> or the <code>clear</code> command will clear your screen.</li>
+<li><kbd>Ctrl</kbd>+<kbd>C</kbd> will cancel the command you are
+writing, and give you a fresh prompt.</li>
+<li><kbd>Ctrl</kbd>+<kbd>R</kbd> will do a reverse-search through your
+command history. This is very useful.</li>
+<li><kbd>Ctrl</kbd>+<kbd>L</kbd> or the <code>clear</code> command will
+clear your screen.</li>
 </ul>
-<p>You can also review your recent commands with the <code>history</code> command, by entering:</p>
+<p>You can also review your recent commands with the
+<code>history</code> command, by entering:</p>
 <pre><code>$ history</code></pre>
-<p>to see a numbered list of recent commands. You can reuse one of these commands directly by referring to the number of that command.</p>
+<p>to see a numbered list of recent commands. You can reuse one of these
+commands directly by referring to the number of that command.</p>
 <p>For example, if your history looked like this:</p>
 <pre><code>259  ls *
 260  ls /usr/bin/*.sh
 261  ls *R1*fastq</code></pre>
 <p>then you could repeat command #260 by entering:</p>
 <pre><code>$ !260</code></pre>
-<p>Type <code>!</code> (exclamation point) and then the number of the command from your history. You will be glad you learned this when you need to re-run very complicated commands. For more information on advanced usage of <code>history</code>, read section 9.3 of <a href="https://www.gnu.org/software/bash/manual/html_node/index.html">Bash manual</a>.</p>
+<p>Type <code>!</code> (exclamation point) and then the number of the
+command from your history. You will be glad you learned this when you
+need to re-run very complicated commands. For more information on
+advanced usage of <code>history</code>, read section 9.3 of <a
+href="https://www.gnu.org/software/bash/manual/html_node/index.html">Bash
+manual</a>.</p>
 <p><br> <br></p>
 </div>
 <div id="challenge---command-history" class="section level2">
 <h2>Challenge - Command history</h2>
-<p>Find the line number in your history for the command that listed all the .sh files in <code>/usr/bin</code>. Rerun that command.</p>
+<p>Find the line number in your history for the command that listed all
+the .sh files in <code>/usr/bin</code>. Rerun that command.</p>
 <details>
 <summary>
 Solution - Command history
 </summary>
-<p>First type <code>history</code>. Find the line number Then use <code>!</code> followed by the line number to rerun that command.</p>
+<p>First type <code>history</code>. Find the line number Then use
+<code>!</code> followed by the line number to rerun that command.</p>
 </details>
 <p><br> <br></p>
 </div>
 <div id="examining-files" class="section level2">
 <h2>Examining Files</h2>
-<p>We now know how to switch directories, run programs, and look at the contents of directories, but how do we look at the contents of files?</p>
-<p>One way to examine a file is to print out all of the contents using the program <code>cat</code>.</p>
-<p>Enter the following command from within the <code>untrimmed_fastq</code> directory:</p>
+<p>We now know how to switch directories, run programs, and look at the
+contents of directories, but how do we look at the contents of
+files?</p>
+<p>One way to examine a file is to print out all of the contents using
+the program <code>cat</code>.</p>
+<p>Enter the following command from within the
+<code>untrimmed_fastq</code> directory:</p>
 <pre><code>$ cat sample_02.fastq</code></pre>
-<p>This will print out all of the contents of the <code>sample_02.fastq</code> to the screen.</p>
+<p>This will print out all of the contents of the
+<code>sample_02.fastq</code> to the screen.</p>
 <p><br> <br></p>
 </div>
 <div id="challenge---viewing-file-contents" class="section level2">
 <h2>Challenge - Viewing file contents</h2>
 <ol style="list-style-type: decimal">
-<li>Print out the contents of the <code>~/CF_Shell/untrimmed_fastq/sample_01.fastq</code> file. What is the last line of the file?</li>
-<li>From your home directory, and without changing directories, use one short command to print the contents of all of the files in the <code>~/CF_Shell/untrimmed_fastq</code> directory.</li>
+<li>Print out the contents of the
+<code>~/CF_Shell/untrimmed_fastq/sample_01.fastq</code> file. What is
+the last line of the file?</li>
+<li>From your home directory, and without changing directories, use one
+short command to print the contents of all of the files in the
+<code>~/CF_Shell/untrimmed_fastq</code> directory.</li>
 </ol>
 <details>
 <summary>
 Solution - Viewing file contents
 </summary>
 <ol style="list-style-type: decimal">
-<li>The last line of the file is <code>C:CCC::CCCCCCCC&lt;8?6A:C28C&lt;608'&amp;&amp;&amp;,'$</code>.</li>
+<li>The last line of the file is
+<code>C:CCC::CCCCCCCC&lt;8?6A:C28C&lt;608'&amp;&amp;&amp;,'$</code>.</li>
 <li><code>cat ~/CF_Shell/untrimmed_fastq/*</code></li>
 </ol>
 </details>
 <p><br> <br></p>
-<p><code>cat</code> is a terrific program, but when the file is really big, it can be annoying to use. The program, <code>less</code>, is useful for this case. <code>less</code> opens the file as read only, and lets you navigate through it. The navigation commands are identical to the <code>man</code> program.</p>
+<p><code>cat</code> is a terrific program, but when the file is really
+big, it can be annoying to use. The program, <code>less</code>, is
+useful for this case. <code>less</code> opens the file as read only, and
+lets you navigate through it. The navigation commands are identical to
+the <code>man</code> program.</p>
 <p>Enter the following command:</p>
 <pre><code>$ less sample_01.fastq</code></pre>
 <p>Some navigation commands in <code>less</code>:</p>
@@ -549,16 +617,34 @@ Solution - Viewing file contents
 </tr>
 </tbody>
 </table>
-<p><code>less</code> also gives you a way of searching through files. Use the “/” key to begin a search. Enter the word you would like to search for and press <code>enter</code>. The screen will jump to the next location where that word is found.</p>
+<p><code>less</code> also gives you a way of searching through files.
+Use the “/” key to begin a search. Enter the word you would like to
+search for and press <code>enter</code>. The screen will jump to the
+next location where that word is found.</p>
 <blockquote>
-<p><strong>Shortcut:</strong> If you hit “/” then “enter”, <code>less</code> will repeat the previous search. <code>less</code> searches from the current location and works its way forward. Scroll up a couple lines on your terminal to verify you are at the beginning of the file. Note, if you are at the end of the file and search for the sequence “CAA”, <code>less</code> will not find it. You either need to go to the beginning of the file (by typing <code>g</code>) and search again using <code>/</code> or you can use <code>?</code> to search backwards in the same way you used <code>/</code> previously.</p>
-<p>For instance, let’s search forward for the sequence <code>TTTTT</code> in our file. You can see that we go right to that sequence, what it looks like, and where it is in the file. If you continue to type <code>/</code> and hit return, you will move forward to the next instance of this sequence motif. If you instead type <code>?</code> and hit return, you will search backwards and move up the file to previous examples of this motif.</p>
+<p><strong>Shortcut:</strong> If you hit “/” then “enter”,
+<code>less</code> will repeat the previous search. <code>less</code>
+searches from the current location and works its way forward. Scroll up
+a couple lines on your terminal to verify you are at the beginning of
+the file. Note, if you are at the end of the file and search for the
+sequence “CAA”, <code>less</code> will not find it. You either need to
+go to the beginning of the file (by typing <code>g</code>) and search
+again using <code>/</code> or you can use <code>?</code> to search
+backwards in the same way you used <code>/</code> previously.</p>
+<p>For instance, let’s search forward for the sequence
+<code>TTTTT</code> in our file. You can see that we go right to that
+sequence, what it looks like, and where it is in the file. If you
+continue to type <code>/</code> and hit return, you will move forward to
+the next instance of this sequence motif. If you instead type
+<code>?</code> and hit return, you will search backwards and move up the
+file to previous examples of this motif.</p>
 </blockquote>
 <p><br> <br></p>
 </div>
 <div id="challenge---viewing-file-contents-ii" class="section level2">
 <h2>Challenge - Viewing file contents II</h2>
-<p>What are the next three nucleotides (characters) after the first instance of the sequence quoted above?</p>
+<p>What are the next three nucleotides (characters) after the first
+instance of the sequence quoted above?</p>
 <details>
 <summary>
 Solution - Viewing file contents II
@@ -566,9 +652,14 @@ Solution - Viewing file contents II
 <p><code>CAC</code></p>
 </details>
 <p><br> <br></p>
-<p>Remember, the <code>man</code> program actually uses <code>less</code> internally and therefore uses the same commands, so you can search documentation using “/” as well!</p>
-<p>There’s another way that we can look at files, and in this case, just look at part of them. This can be particularly useful if we just want to see the beginning or end of the file, or see how it’s formatted.</p>
-<p>The commands are <code>head</code> and <code>tail</code> and they let you look at the beginning and end of a file, respectively.</p>
+<p>Remember, the <code>man</code> program actually uses
+<code>less</code> internally and therefore uses the same commands, so
+you can search documentation using “/” as well!</p>
+<p>There’s another way that we can look at files, and in this case, just
+look at part of them. This can be particularly useful if we just want to
+see the beginning or end of the file, or see how it’s formatted.</p>
+<p>The commands are <code>head</code> and <code>tail</code> and they let
+you look at the beginning and end of a file, respectively.</p>
 <pre><code>$ head sample_02.fastq</code></pre>
 <pre><code>@SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35
 NNNNNNNNNNNNNNNNCNNNNNNNNNNNNNNNNNN
@@ -591,7 +682,8 @@ B!;?!A=5922:##########!!!!!!!######
 CNCTNTATGCGTACGGCAGTGANNNNNNNGGAGAT
 +SRR098026.249 HWUSI-EAS1599_1:2:1:2:1057 length=35
 A!@B!BBB@ABAB#########!!!!!!!######</code></pre>
-<p>The <code>-n</code> option to either of these commands can be used to print the first or last <code>n</code> lines of a file.</p>
+<p>The <code>-n</code> option to either of these commands can be used to
+print the first or last <code>n</code> lines of a file.</p>
 <pre><code>$ head -n 1 sample_02.fastq</code></pre>
 <pre><code>@SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35</code></pre>
 <pre><code>$ tail -n 1 sample_02.fastq</code></pre>
@@ -600,43 +692,70 @@ A!@B!BBB@ABAB#########!!!!!!!######</code></pre>
 </div>
 <div id="viewing-part-of-a-fastq-file" class="section level2">
 <h2>Viewing part of a FASTQ file</h2>
-<p>In a FASTQ file, each sequencing read is represented in a 4-line entry. This means we can view the first read in one of the files by using <code>head</code> to look at the first four lines.</p>
+<p>In a FASTQ file, each sequencing read is represented in a 4-line
+entry. This means we can view the first read in one of the files by
+using <code>head</code> to look at the first four lines.</p>
 <pre><code>$ head -n 4 sample_02.fastq</code></pre>
 <pre><code>@SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35
 NNNNNNNNNNNNNNNNCNNNNNNNNNNNNNNNNNN
 +SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35
 !!!!!!!!!!!!!!!!#!!!!!!!!!!!!!!!!!!</code></pre>
-<p>We’ll discuss the FASTQ format in detail in our upcoming RNA-Seq workshop, but for now we’ll just look at the second line, which contains the nucleotides. All but one of the nucleotides in this read are unknown (<code>N</code>). This is a pretty bad read!</p>
+<p>We’ll discuss the FASTQ format in detail in our upcoming RNA-Seq
+workshop, but for now we’ll just look at the second line, which contains
+the nucleotides. All but one of the nucleotides in this read are unknown
+(<code>N</code>). This is a pretty bad read!</p>
 <p><br> <br></p>
 </div>
 <div id="creating-moving-copying-and-removing" class="section level2">
 <h2>Creating, moving, copying, and removing</h2>
-<p>Now we can move around in the file structure, look at files, and search files. But what if we want to copy files or move them around or get rid of them? Most of the time, you can do these sorts of file manipulations without the command line, but there will be some cases (like when you’re working with a remote computer like we are for this lesson) where it will be impossible. You’ll also find that you may be working with hundreds of files and want to do similar manipulations to all of those files. In cases like this, it’s much faster to do these operations at the command line.</p>
+<p>Now we can move around in the file structure, look at files, and
+search files. But what if we want to copy files or move them around or
+get rid of them? Most of the time, you can do these sorts of file
+manipulations without the command line, but there will be some cases
+(like when you’re working with a remote computer like we are for this
+lesson) where it will be impossible. You’ll also find that you may be
+working with hundreds of files and want to do similar manipulations to
+all of those files. In cases like this, it’s much faster to do these
+operations at the command line.</p>
 <p><br></p>
 <div id="copying-files" class="section level3">
 <h3>Copying Files</h3>
-<p>When working with computational data, it’s important to keep a safe copy of that data that can’t be accidentally overwritten or deleted. For this lesson, our raw data is our FASTQ files. We don’t want to accidentally change the original files, so we’ll make a copy of them and change the file permissions so that we can read from, but not write to, the files.</p>
-<p>First, let’s make a copy of one of our FASTQ files using the <code>cp</code> command.</p>
-<p>Navigate to the <code>CF_Shell/untrimmed_fastq</code> directory and enter:</p>
+<p>When working with computational data, it’s important to keep a safe
+copy of that data that can’t be accidentally overwritten or deleted. For
+this lesson, our raw data is our FASTQ files. We don’t want to
+accidentally change the original files, so we’ll make a copy of them and
+change the file permissions so that we can read from, but not write to,
+the files.</p>
+<p>First, let’s make a copy of one of our FASTQ files using the
+<code>cp</code> command.</p>
+<p>Navigate to the <code>CF_Shell/untrimmed_fastq</code> directory and
+enter:</p>
 <pre><code>$ cp sample_02.fastq sample_02-copy.fastq
 $ ls -F</code></pre>
 <pre><code>sample_01.fastq  sample_02-copy.fastq  sample_02.fastq</code></pre>
-<p>We now have two copies of the <code>sample_02.fastq</code> file, one of them named <code>sample_02-copy.fastq</code>. We’ll move this file to a new directory called <code>backup</code> where we’ll store our backup data files.</p>
+<p>We now have two copies of the <code>sample_02.fastq</code> file, one
+of them named <code>sample_02-copy.fastq</code>. We’ll move this file to
+a new directory called <code>backup</code> where we’ll store our backup
+data files.</p>
 <p><br></p>
 </div>
 <div id="creating-directories" class="section level3">
 <h3>Creating Directories</h3>
-<p>The <code>mkdir</code> command is used to make a directory. Enter <code>mkdir</code> followed by a space, then the directory name you want to create:</p>
+<p>The <code>mkdir</code> command is used to make a directory. Enter
+<code>mkdir</code> followed by a space, then the directory name you want
+to create:</p>
 <pre><code>$ mkdir backup</code></pre>
 <p><br></p>
 </div>
 <div id="moving-renaming" class="section level3">
 <h3>Moving / Renaming</h3>
-<p>We can now move our backup file to this directory. We can move files around using the command <code>mv</code>:</p>
+<p>We can now move our backup file to this directory. We can move files
+around using the command <code>mv</code>:</p>
 <pre><code>$ mv sample_02-copy.fastq backup
 $ ls backup</code></pre>
 <pre><code>sample_02-copy.fastq</code></pre>
-<p>The <code>mv</code> command is also how you rename files. Let’s rename this file to make it clear that this is a backup:</p>
+<p>The <code>mv</code> command is also how you rename files. Let’s
+rename this file to make it clear that this is a backup:</p>
 <pre><code>$ cd backup
 $ mv sample_02-copy.fastq sample_02-backup.fastq
 $ ls</code></pre>
@@ -645,15 +764,41 @@ $ ls</code></pre>
 </div>
 <div id="file-permissions" class="section level3">
 <h3>File Permissions</h3>
-<p>We’ve now made a backup copy of our file, but just because we have two copies, it doesn’t make us safe. We can still accidentally delete or overwrite both copies. To make sure we can’t accidentally mess up this backup file, we’re going to change the permissions on the file so that we’re only allowed to read (i.e. view) the file, not write to it (i.e. make new changes).</p>
-<p>View the current permissions on a file using the <code>-l</code> (long) flag for the <code>ls</code> command:</p>
+<p>We’ve now made a backup copy of our file, but just because we have
+two copies, it doesn’t make us safe. We can still accidentally delete or
+overwrite both copies. To make sure we can’t accidentally mess up this
+backup file, we’re going to change the permissions on the file so that
+we’re only allowed to read (i.e. view) the file, not write to it
+(i.e. make new changes).</p>
+<p>View the current permissions on a file using the <code>-l</code>
+(long) flag for the <code>ls</code> command:</p>
 <pre><code>$ ls -l</code></pre>
 <pre><code>-rw-r--r-- 1 dcuser dcuser 43332 Nov 15 23:02 sample_02-backup.fastq</code></pre>
-<p>The first part of the output for the <code>-l</code> flag gives you information about the file’s current permissions. There are ten slots in the permissions list. The first character in this list is related to file type, not permissions, so we’ll ignore it for now. The next three characters relate to the permissions that the file owner has, the next three relate to the permissions for group members, and the final three characters specify what other users outside of your group can do with the file. We’re going to concentrate on the three positions that deal with your permissions (as the file owner).</p>
+<p>The first part of the output for the <code>-l</code> flag gives you
+information about the file’s current permissions. There are ten slots in
+the permissions list. The first character in this list is related to
+file type, not permissions, so we’ll ignore it for now. The next three
+characters relate to the permissions that the file owner has, the next
+three relate to the permissions for group members, and the final three
+characters specify what other users outside of your group can do with
+the file. We’re going to concentrate on the three positions that deal
+with your permissions (as the file owner).</p>
 <p><img src="images/rwx_figure.svg" alt="Permissions breakdown" /></p>
 <p><br></p>
-<p>Here the three positions that relate to the file owner are <code>rw-</code>. The <code>r</code> means that you have permission to read the file, the <code>w</code> indicates that you have permission to write to (i.e. make changes to) the file, and the third position is a <code>-</code>, indicating that you don’t have permission to carry out the ability encoded by that space (this is the space where <code>x</code> or executable ability is stored, we’ll talk more about this in <a href="http://www.datacarpentry.org/shell-genomics/05-writing-scripts/">a later lesson</a>).</p>
-<p>Our goal for now is to change permissions on this file so that you no longer have <code>w</code> or write permissions. We can do this using the <code>chmod</code> (change mode) command and subtracting (<code>-</code>) the write permission <code>-w</code>.</p>
+<p>Here the three positions that relate to the file owner are
+<code>rw-</code>. The <code>r</code> means that you have permission to
+read the file, the <code>w</code> indicates that you have permission to
+write to (i.e. make changes to) the file, and the third position is a
+<code>-</code>, indicating that you don’t have permission to carry out
+the ability encoded by that space (this is the space where
+<code>x</code> or executable ability is stored, we’ll talk more about
+this in <a
+href="http://www.datacarpentry.org/shell-genomics/05-writing-scripts/">a
+later lesson</a>).</p>
+<p>Our goal for now is to change permissions on this file so that you no
+longer have <code>w</code> or write permissions. We can do this using
+the <code>chmod</code> (change mode) command and subtracting
+(<code>-</code>) the write permission <code>-w</code>.</p>
 <pre><code>$ chmod -w sample_02-backup.fastq
 $ ls -l</code></pre>
 <pre><code>-r--r--r-- 1 dcuser dcuser 43332 Nov 15 23:02 sample_02-backup.fastq</code></pre>
@@ -661,28 +806,44 @@ $ ls -l</code></pre>
 </div>
 <div id="removing" class="section level3">
 <h3>Removing</h3>
-<p>To prove to ourselves that you no longer have the ability to modify this file, try deleting it with the <code>rm</code> command:</p>
+<p>To prove to ourselves that you no longer have the ability to modify
+this file, try deleting it with the <code>rm</code> command:</p>
 <pre><code>$ rm sample_02-backup.fastq</code></pre>
 <p>You’ll be asked if you want to override your file permissions:</p>
 <pre><code>rm: remove write-protected regular file ‘sample_02-backup.fastq’?</code></pre>
-<p>You should enter <code>n</code> for no. If you enter <code>n</code> (for no), the file will not be deleted. If you enter <code>y</code>, you will delete the file. This gives us an extra measure of security, as there is one more step between us and deleting our data files.</p>
-<p><strong>Important</strong>: The <code>rm</code> command permanently removes the file. Be careful with this command. It doesn’t just nicely put the files in the Trash. They’re really gone.</p>
-<p>By default, <code>rm</code> will not delete directories. You can tell <code>rm</code> to delete a directory using the <code>-r</code> (recursive) option. Let’s delete the backup directory we just made.</p>
+<p>You should enter <code>n</code> for no. If you enter <code>n</code>
+(for no), the file will not be deleted. If you enter <code>y</code>, you
+will delete the file. This gives us an extra measure of security, as
+there is one more step between us and deleting our data files.</p>
+<p><strong>Important</strong>: The <code>rm</code> command permanently
+removes the file. Be careful with this command. It doesn’t just nicely
+put the files in the Trash. They’re really gone.</p>
+<p>By default, <code>rm</code> will not delete directories. You can tell
+<code>rm</code> to delete a directory using the <code>-r</code>
+(recursive) option. Let’s delete the backup directory we just made.</p>
 <p>Enter the following command:</p>
 <pre><code>$ cd ..
 $ rm -r backup</code></pre>
-<p>This will delete not only the directory, but all files within the directory. If you have write-protected files in the directory, you will be asked whether you want to override your permission settings.</p>
+<p>This will delete not only the directory, but all files within the
+directory. If you have write-protected files in the directory, you will
+be asked whether you want to override your permission settings.</p>
 <p><br> <br></p>
 </div>
 </div>
 <div id="challenge---working-with-files" class="section level2">
 <h2>Challenge - Working with files</h2>
-<p>Starting in the <code>CF_Shell/untrimmed_fastq/</code> directory, do the following:</p>
+<p>Starting in the <code>CF_Shell/untrimmed_fastq/</code> directory, do
+the following:</p>
 <ol style="list-style-type: decimal">
-<li>Make sure that you have deleted your backup directory and all files it contains.</li>
-<li>Create a backup of each of your FASTQ files using <code>cp</code>. (Note: You’ll need to do this individually for each of the two FASTQ files. We haven’t learned yet how to do this with a wildcard.)</li>
-<li>Create a new backup directory, then use a wildcard to move all of your backup files there.</li>
-<li>Change the permissions on all of your backup files to be write-protected.</li>
+<li>Make sure that you have deleted your backup directory and all files
+it contains.</li>
+<li>Create a backup of each of your FASTQ files using <code>cp</code>.
+(Note: You’ll need to do this individually for each of the two FASTQ
+files. We haven’t learned yet how to do this with a wildcard.)</li>
+<li>Create a new backup directory, then use a wildcard to move all of
+your backup files there.</li>
+<li>Change the permissions on all of your backup files to be
+write-protected.</li>
 </ol>
 <p><br> <br></p>
 <details>
@@ -691,11 +852,14 @@ Solution - Working with files
 </summary>
 <ol style="list-style-type: decimal">
 <li><code>rm -r backup</code></li>
-<li><code>cp sample_02.fastq sample_02-backup.fastq</code> and <code>cp sample_01.fastq sample_01-backup.fastq</code></li>
-<li><code>mkdir backup</code> and <code>mv *-backup.fastq backup</code></li>
+<li><code>cp sample_02.fastq sample_02-backup.fastq</code> and
+<code>cp sample_01.fastq sample_01-backup.fastq</code></li>
+<li><code>mkdir backup</code> and
+<code>mv *-backup.fastq backup</code></li>
 <li><code>chmod -w backup/*-backup.fastq</code></li>
 </ol>
-<p>It’s always a good idea to check your work with <code>ls -l backup</code>. You should see something like:</p>
+<p>It’s always a good idea to check your work with
+<code>ls -l backup</code>. You should see something like:</p>
 <pre><code>-r--r--r-- 1 dcuser dcuser 47552 Nov 15 23:06 sample_01-backup.fastq
 -r--r--r-- 1 dcuser dcuser 43332 Nov 15 23:06 sample_02-backup.fastq</code></pre>
 </details>

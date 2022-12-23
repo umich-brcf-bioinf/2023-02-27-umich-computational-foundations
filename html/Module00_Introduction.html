@@ -14,7 +14,7 @@
 
 <title>Computational Foundations Workshop</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
@@ -152,11 +152,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -185,8 +189,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -194,16 +198,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -432,8 +429,8 @@ a[target="_blank"]::after {
 <ul>
 <li><p>We want to make the computers work harder so we can do more
 meaningful work. This workshop introduces foundational tools and
-techniques that in our experience make computational projects simpler,
-more powerful, and more reproducible.</p></li>
+techniques that make computational projects simpler, more powerful, and
+more reproducible.</p></li>
 <li><p>By the end of the workshop, attendees will be able to</p>
 <ul>
 <li>Understand how to use a range of basic Bash commands including
@@ -484,16 +481,14 @@ src="images/Module00_headshots/headshot_trsaari.jpg" /></th>
 <tr class="even">
 <td align="center"><img
 src="images/Module00_headshots/headshot_damki.jpg" /></td>
-<td align="center"><img
-src="images/Module00_headshots/headshot_imorse.jpg" /></td>
-<td align="center"><img
-src="images/Module00_headshots/headshot_salucas.jpg" /></td>
+<td align="center"></td>
+<td align="center"></td>
 <td align="center"></td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>Dana</strong></td>
-<td align="center"><strong>Irene</strong></td>
-<td align="center"><strong>Sarah</strong></td>
+<td align="center"></td>
+<td align="center"></td>
 <td align="center"></td>
 </tr>
 </tbody>
@@ -610,7 +605,7 @@ Chat functionality.</li>
 </div>
 <ul>
 <li>Slack messages will be posted to the
-<strong>2022-10-computational-foundations</strong> channel. Click on the
+<strong>2023-02-computational-foundations</strong> channel. Click on the
 channel in the left pane (1) to select this channel.</li>
 <li>You can type in the <strong>message field</strong> (2); click
 <strong>send</strong> (3) to post your message to everyone.</li>

@@ -39,7 +39,7 @@ that will enable more efficient, reproducible, and impactful computational resea
 
 ## Housekeeping
 
-- Please take our optional <a class="external" href="https://forms.gle/4Z8HjJRw4PKQMEti7" target="_blank">post-workshop survey</a> (5-10 minutes) <br />
+- Please take our optional <a class="external" href="https://forms.gle/ukp1Z4sxcjuER5dP6" target="_blank">post-workshop survey</a> (5-10 minutes) <br />
 
 - We will email you a link to the final session recordings by next week.
 
@@ -109,8 +109,9 @@ University of Michigan</a> host several introductory workshops each year followi
 |:-:|:-:|:-:|:-:|
 | **Chris** | **Marci** | **Raymond** | **Travis** |
 | | | | |
-| ![](images/Module00_headshots/headshot_damki.jpg) | ![](images/Module00_headshots/headshot_imorse.jpg) | ![](images/Module00_headshots/headshot_salucas.jpg) |
-|  **Dana** | **Irene** | **Sarah**|<br/>
+| ![](images/Module00_headshots/headshot_damki.jpg) |
+|  **Dana** |
+<br/>
 
 Thank you for participating on our workshop. We welcome your questions and
 feedback now and in the future.

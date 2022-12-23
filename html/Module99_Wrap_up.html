@@ -13,7 +13,7 @@
 
 <title>Wrapping up</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
@@ -151,11 +151,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -184,8 +188,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -193,16 +197,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -433,7 +430,7 @@ computational research.</p>
 <h2>Housekeeping</h2>
 <ul>
 <li><p>Please take our optional
-<a class="external" href="https://forms.gle/4Z8HjJRw4PKQMEti7" target="_blank">post-workshop
+<a class="external" href="https://forms.gle/ukp1Z4sxcjuER5dP6" target="_blank">post-workshop
 survey</a> (5-10 minutes) <br /></p></li>
 <li><p>We will email you a link to the final session recordings by next
 week.</p></li>
@@ -587,20 +584,19 @@ src="images/Module00_headshots/headshot_trsaari.jpg" /></th>
 <tr class="odd">
 <td align="center"><img
 src="images/Module00_headshots/headshot_damki.jpg" /></td>
-<td align="center"><img
-src="images/Module00_headshots/headshot_imorse.jpg" /></td>
-<td align="center"><img
-src="images/Module00_headshots/headshot_salucas.jpg" /></td>
+<td align="center"></td>
+<td align="center"></td>
 <td align="center"></td>
 </tr>
 <tr class="even">
 <td align="center"><strong>Dana</strong></td>
-<td align="center"><strong>Irene</strong></td>
-<td align="center"><strong>Sarah</strong></td>
-<td align="center"><br/></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
 </tr>
 </tbody>
 </table>
+<p><br/></p>
 <p>Thank you for participating on our workshop. We welcome your
 questions and feedback now and in the future.</p>
 <p>Bioinformatics Workshop Team</p>

@@ -59,8 +59,8 @@ recognize these techniques when you see them and, with some independent study, a
 | ![](images/Module00_headshots/headshot_cgates.jpg) | ![](images/Module00_headshots/headshot_mbradenb.jpg) | ![](images/Module00_headshots/headshot_rcavalca.jpg) | ![](images/Module00_headshots/headshot_trsaari.jpg) |
 |:-:|:-:|:-:|:-:|
 | **Chris** | **Marci** | **Raymond** | **Travis** |
-| ![](images/Module00_headshots/headshot_damki.jpg) | ![](images/Module00_headshots/headshot_imorse.jpg) | ![](images/Module00_headshots/headshot_salucas.jpg) |
-|  **Dana** | **Irene** | **Sarah**|
+| ![](images/Module00_headshots/headshot_damki.jpg) |
+|  **Dana** |
 <br/>
 
 
@@ -146,7 +146,7 @@ breakout room.
 
 ![Posting messages to Slack](images/Module00_slack.png)
 
-  - Slack messages will be posted to the **2022-10-computational-foundations** channel.
+  - Slack messages will be posted to the **2023-02-computational-foundations** channel.
     Click on the channel in the left pane (1) to select this channel.
   - You can type in the **message field** (2); click **send** (3) to
     post your message to everyone.
