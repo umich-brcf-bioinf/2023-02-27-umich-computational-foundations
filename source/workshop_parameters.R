@@ -14,6 +14,7 @@ eventbrite_cf_link_text = "2/27-3/1, 9am-1pm ET: Computational Foundations"
 eventbrite_rsd_link_url = "https://www.eventbrite.com/e/rna-seq-demystified-a-virtual-3-day-workshop-from-um-bionfcore-tickets-496438800817"
 eventbrite_rsd_link_text = "3/13-3/15, 9am-1pm ET: RNA-Seq Demystified"
 eventbrite_registration_close_date = "2/20/2023"
+cf_registration_opens="mid-February"
 
 #preworkshop_checklist.md
 preworkshop_survey_url = "https://forms.gle/tLq7MsJCWF9xyxMC6"

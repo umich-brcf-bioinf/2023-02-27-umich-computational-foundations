@@ -22,7 +22,7 @@ body{ /* Normal  */
 The Bioinf Core Workshop Team is pleased to host two workshops:
 
 ### **<a href="https://www.eventbrite.com/e/computational-foundations-a-virtual-3-day-workshop-from-um-bioinfcore-tickets-496436293317" target="_blank">2/27-3/1, 9am-1pm ET: Computational Foundations</a>**  
-### **<a href="https://www.eventbrite.com/e/rna-seq-demystified-a-virtual-3-day-workshop-from-um-bionfcore-tickets-496438800817" target="_blank">3/13-11/15, 9am-1pm ET: RNA-Seq Demystified</a>**
+### **<a href="https://www.eventbrite.com/e/rna-seq-demystified-a-virtual-3-day-workshop-from-um-bionfcore-tickets-496438800817" target="_blank">3/13-3/15, 9am-1pm ET: RNA-Seq Demystified</a>**
 
 <br/> 
 
@@ -31,7 +31,7 @@ The Bioinf Core Workshop Team is pleased to host two workshops:
 * Computational Foundations workshop assumes no previous coding/programming experience. 
 RNA-Seq Demystified assumes a basic knowledge of genetics and prior enrollment 
 in a Computational Foundations workshop, Software Carpentry workshop, or equivalent experience.
-* The cost is $300/seat for the entire two-workshop series. While it is possible to register for a single workshop, we recommend that you attend both. When you enroll in the RNA-Seq Demystified workshop, you can request to be automatically registered for Computational Foundations. Register at <a href="https://www.eventbrite.com/e/rna-seq-demystified-a-virtual-3-day-workshop-from-um-bionfcore-tickets-496438800817" target="_blank">EventBrite</a>. *(The Computational Foundations workshop is free of charge; however please note that: 1) registration precedence is given to RNA-Seq Demystified attendees and 2) general admission registration for Computational Foundations opens later in October.)*
+* The cost is $300/seat for the entire two-workshop series. While it is possible to register for a single workshop, we recommend that you attend both. When you enroll in the RNA-Seq Demystified workshop, you can request to be automatically registered for Computational Foundations. Register at <a href="https://www.eventbrite.com/e/rna-seq-demystified-a-virtual-3-day-workshop-from-um-bionfcore-tickets-496438800817" target="_blank">EventBrite</a>. *(The Computational Foundations workshop is free of charge; however please note that: 1) registration precedence is given to RNA-Seq Demystified attendees and 2) general admission registration for Computational Foundations opens mid-February.)*
 * Registration closes 2/20/2023.
 
 
