@@ -105,7 +105,7 @@ be happy to lend a hand to get things working.
 
 
 ### **Launch a command window**
-The steps below walk though how to connect to the shared workshop server. You 
+The steps below walk through how to connect to the shared workshop server. You 
 can see a guided video of these same steps here:
 
 - <a class="external" target="_blank" href="https://www.mivideo.it.umich.edu/media/t/1_nj1mvmkb">Workshop setup for Windows</a> 
