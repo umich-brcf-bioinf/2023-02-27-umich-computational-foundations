@@ -16,6 +16,11 @@ output:
 body{ /* Normal  */
       font-size: 14pt;
   }
+  
+a.external {
+    background: url(../images/external-link.png) center right no-repeat;
+    padding-right: 13px;
+}
 </style>
 
 This document guides you through the installation of software necessary
@@ -98,7 +103,15 @@ be happy to lend a hand to get things working.
       Slack invite you can access the Slack channel by pointing your web browser
       here: https://umbioinfcoreworkshops.slack.com
 
+
 ### **Launch a command window**
+The steps below walk though how to connect to the shared workshop server. You 
+can see a guided video of these same steps here:
+
+- <a class="external" target="_blank" href="https://www.mivideo.it.umich.edu/media/t/1_nj1mvmkb">Workshop setup for Windows</a> 
+- <a class="external" target="_blank" href="https://www.mivideo.it.umich.edu/media/t/1_6wdbixfw">Workshop setup for Macintosh</a> 
+
+<hr />
 
    - If you are using Windows:
 
