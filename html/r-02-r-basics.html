@@ -13,7 +13,7 @@
 
 <title>R Basics</title>
 
-<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
@@ -352,10 +352,11 @@ and functional operations on objects</a></li>
 <li><a href="#creating-and-subsetting-vectors"
 id="toc-creating-and-subsetting-vectors">Creating and subsetting
 vectors</a></li>
-<li><a
-href="#adding-to-removing-or-replacing-values-in-existing-vectors"
-id="toc-adding-to-removing-or-replacing-values-in-existing-vectors">Adding
-to, removing, or replacing values in existing vectors</a></li>
+<li><a href="#sorting-vectors" id="toc-sorting-vectors">Sorting
+vectors</a></li>
+<li><a href="#adding-removing-or-replacing-values-in-existing-vectors"
+id="toc-adding-removing-or-replacing-values-in-existing-vectors">Adding,
+removing, or replacing values in existing vectors</a></li>
 <li><a href="#logical-subsetting" id="toc-logical-subsetting">Logical
 Subsetting</a></li>
 <li><a href="#a-few-final-vector-tricks"
@@ -543,8 +544,8 @@ it. R will not give you a warning or error if you overwriting an object,
 which may or may not be a good thing depending on how you look at
 it.</p>
 <pre class="r"><code># gene_name has the value &#39;pten&#39; or whatever value you used in the challenge.
-# We will now assign the new value &#39;tp53&#39;
-gene_name &lt;- &#39;tp53&#39;</code></pre>
+# We will now assign the new value &#39;TP53&#39;
+gene_name &lt;- &#39;TP53&#39;</code></pre>
 <p>You can also remove an object from R’s memory entirely. The
 <code>rm()</code> function will delete the object.</p>
 <pre class="r"><code># delete the object &#39;gene_name&#39;
@@ -616,10 +617,10 @@ objects and check their modes</h2>
 function to verify their modes. Try to guess what the mode will be
 before you look at the solution</p>
 <ol style="list-style-type: decimal">
-<li><code>chromosome_name &lt;- 'chr02'</code></li>
+<li><code>chr_name &lt;- 'chr2'</code></li>
 <li><code>scale_factor &lt;- 0.47</code></li>
 <li><code>chr_position &lt;- '1001701'</code></li>
-<li><code>spock &lt;- TRUE</code></li>
+<li><code>is_circular &lt;- TRUE</code></li>
 <li><code>pilot &lt;- Earhart</code></li>
 </ol>
 </blockquote>
@@ -627,22 +628,22 @@ before you look at the solution</p>
 <summary>
 Solution
 </summary>
-<pre class="r"><code>chromosome_name &lt;- &#39;chr02&#39;
+<pre class="r"><code>chr_name &lt;- &#39;chr2&#39;
 scale_factor &lt;- 0.5
 chr_position &lt;- &#39;1001701&#39;
-spock &lt;- TRUE
+is_circular &lt;- TRUE
 pilot &lt;- Earhart</code></pre>
 <pre><code>Error in eval(expr, envir, enclos): object &#39;Earhart&#39; not found</code></pre>
-<pre class="r"><code>mode(chromosome_name)</code></pre>
+<pre class="r"><code>mode(chr_name)</code></pre>
 <pre><code>[1] &quot;character&quot;</code></pre>
 <pre class="r"><code>mode(scale_factor)</code></pre>
 <pre><code>[1] &quot;numeric&quot;</code></pre>
 <pre class="r"><code>mode(chr_position)</code></pre>
 <pre><code>[1] &quot;character&quot;</code></pre>
-<pre class="r"><code>mode(spock)</code></pre>
+<pre class="r"><code>mode(is_circular)</code></pre>
 <pre><code>[1] &quot;logical&quot;</code></pre>
 <pre class="r"><code>mode(pilot)</code></pre>
-<pre><code>Error in mode(pilot): object &#39;pilot&#39; not found</code></pre>
+<pre><code>[1] &quot;character&quot;</code></pre>
 </details>
 <p><br></p>
 <p>Notice that R interprets a series of numbers wrapped in quotes as
@@ -653,7 +654,7 @@ is no such named object yet. If <code>Earhart</code> did exist, then the
 mode of <code>pilot</code> would be whatever the mode of
 <code>Earhart</code> was originally. If we did indeed want
 <code>pilot</code> to be assigned the name “Earhart” we would do:</p>
-<pre class="r"><code>pilot &lt;- &quot;Earhart&quot;
+<pre class="r"><code>pilot &lt;- &#39;Earhart&#39;
 mode(pilot)</code></pre>
 <pre><code>[1] &quot;character&quot;</code></pre>
 <div id="mathematical-and-functional-operations-on-objects"
@@ -721,16 +722,16 @@ create a vector is to use the <code>c()</code> function - the
 one or more values; for multiple values, separate each value with a
 comma:</p>
 <pre class="r"><code># Create a vector of country names
-countries &lt;- c(&quot;Thailand&quot;, &quot;Lesotho&quot;, &quot;Suriname&quot;, &quot;Canada&quot;)
+countries &lt;- c(&#39;Thailand&#39;, &#39;Ghana&#39;, &#39;Suriname&#39;, &#39;Canada&#39;)
 
 # Continent of country
 continents &lt;- c(&#39;Asia&#39;, &#39;Africa&#39;, &#39;South America&#39;, &#39;North America&#39;)
 
 # Population of country
-populations &lt;- c(69950850, 2108328, 575990, 38436447) # Source: Wikipedia
+populations &lt;- c(69950850, 30792608, 575990, 38436447) # Source: Wikipedia
 
 # Logical vector of Asian countries
-on_asia &lt;- c(TRUE, FALSE, FALSE, FALSE)</code></pre>
+in_asia &lt;- c(TRUE, FALSE, FALSE, FALSE)</code></pre>
 <p>Vectors always have a <strong>mode</strong> and a
 <strong>length</strong>. You can check these with the
 <code>mode()</code> and <code>length()</code> functions respectively.
@@ -742,13 +743,13 @@ mode(countries)</code></pre>
 <pre class="r"><code>length(countries)</code></pre>
 <pre><code>[1] 4</code></pre>
 <pre class="r"><code>str(countries)</code></pre>
-<pre><code> chr [1:4] &quot;Thailand&quot; &quot;Lesotho&quot; &quot;Suriname&quot; &quot;Canada&quot;</code></pre>
-<pre class="r"><code>mode(continents)</code></pre>
-<pre><code>[1] &quot;character&quot;</code></pre>
-<pre class="r"><code>mode(populations)</code></pre>
-<pre><code>[1] &quot;numeric&quot;</code></pre>
-<pre class="r"><code>mode(on_asia)</code></pre>
-<pre><code>[1] &quot;logical&quot;</code></pre>
+<pre><code> chr [1:4] &quot;Thailand&quot; &quot;Ghana&quot; &quot;Suriname&quot; &quot;Canada&quot;</code></pre>
+<pre class="r"><code>str(continents)</code></pre>
+<pre><code> chr [1:4] &quot;Asia&quot; &quot;Africa&quot; &quot;South America&quot; &quot;North America&quot;</code></pre>
+<pre class="r"><code>str(populations)</code></pre>
+<pre><code> num [1:4] 69950850 30792608 575990 38436447</code></pre>
+<pre class="r"><code>str(in_asia)</code></pre>
+<pre><code> logi [1:4] TRUE FALSE FALSE FALSE</code></pre>
 <p>Vectors are quite important in R. Another data type that we will work
 with later in this lesson, data frames, are collections of vectors. What
 we learn here about vectors will pay off even more when we start working
@@ -768,7 +769,7 @@ countries[3]</code></pre>
 retrieve a range of numbers:</p>
 <pre class="r"><code># get the 1st through 3rd value in the countries vector
 countries[1:3]</code></pre>
-<pre><code>[1] &quot;Thailand&quot; &quot;Lesotho&quot;  &quot;Suriname&quot;</code></pre>
+<pre><code>[1] &quot;Thailand&quot; &quot;Ghana&quot;    &quot;Suriname&quot;</code></pre>
 <p>If you want to retrieve several (but not necessarily sequential)
 items from a vector, you pass a <strong>vector of indices</strong>; a
 vector that has the numbered positions you wish to retrieve.</p>
@@ -779,44 +780,62 @@ countries[c(1, 3, 4)]</code></pre>
 countries you can do the following. We will see other ways of logically
 subsetting vectors in a bit.</p>
 <pre class="r"><code># Get the Asian countries
-countries[on_asia]</code></pre>
+countries[in_asia]</code></pre>
 <pre><code>[1] &quot;Thailand&quot;</code></pre>
 <p>There are additional (and perhaps less commonly used) ways of
 subsetting a vector (see <a
 href="https://thomasleeper.com/Rcourse/Tutorials/vectorindexing.html">these
-examples</a>). Also, several of these subsetting expressions can be
-combined:</p>
-<pre class="r"><code># get the 4th value, and then the 1st through the 3rd value
-# in other words, you can reorder the countries
-countries[c(4, 1:3)]</code></pre>
-<pre><code>[1] &quot;Canada&quot;   &quot;Thailand&quot; &quot;Lesotho&quot;  &quot;Suriname&quot;</code></pre>
+examples</a>).</p>
 </div>
-<div id="adding-to-removing-or-replacing-values-in-existing-vectors"
+<div id="sorting-vectors" class="section level2">
+<h2>Sorting vectors</h2>
+<p>Sorting a vector can be done in a couple ways. The
+<code>sort()</code> function will sort a vector <strong>in
+place</strong> and return a sorted vectore. The <code>order()</code>
+function will sort a vector and return the <strong>indices</strong>
+representing the sorted vector. A couple examples to illustrate the
+difference:</p>
+<pre class="r"><code>sort(countries)</code></pre>
+<pre><code>[1] &quot;Canada&quot;   &quot;Ghana&quot;    &quot;Suriname&quot; &quot;Thailand&quot;</code></pre>
+<p>Notice that the returned vector is the character vector of countries
+with the entries in alphabetical order.</p>
+<pre class="r"><code>order(countries)</code></pre>
+<pre><code>[1] 4 2 3 1</code></pre>
+<p>Notice this is giving us the indices, with respect to the original
+countries vector, that will give the countries in alphabetical order. So
+to get to the same spot as <code>sort(countries)</code> we would do:</p>
+<pre class="r"><code>countries[order(countries)]</code></pre>
+<pre><code>[1] &quot;Canada&quot;   &quot;Ghana&quot;    &quot;Suriname&quot; &quot;Thailand&quot;</code></pre>
+<p>The usefulness of the <code>order()</code> function over
+<code>sort()</code> will become apparent when we deal with data frames
+later.</p>
+</div>
+<div id="adding-removing-or-replacing-values-in-existing-vectors"
 class="section level2">
-<h2>Adding to, removing, or replacing values in existing vectors</h2>
+<h2>Adding, removing, or replacing values in existing vectors</h2>
 <p>Once you have an existing vector, you may want to add a new item to
 it. To do so, you can use the <code>c()</code> function again to add
 your new value:</p>
 <pre class="r"><code># add the countries &#39;Bolivia&#39; and &#39;Tonga&#39; to our list of countries
 # this overwrites our existing vector
-countries &lt;- c(countries, &quot;Bolivia&quot;, &quot;Tonga&quot;)</code></pre>
+more_countries &lt;- c(countries, &#39;Bolivia&#39;, &#39;Tonga&#39;)</code></pre>
 <p>We can verify that “countries” contains the new entries</p>
-<pre class="r"><code>countries</code></pre>
-<pre><code>[1] &quot;Thailand&quot; &quot;Lesotho&quot;  &quot;Suriname&quot; &quot;Canada&quot;   &quot;Bolivia&quot;  &quot;Tonga&quot;   </code></pre>
+<pre class="r"><code>more_countries</code></pre>
+<pre><code>[1] &quot;Thailand&quot; &quot;Ghana&quot;    &quot;Suriname&quot; &quot;Canada&quot;   &quot;Bolivia&quot;  &quot;Tonga&quot;   </code></pre>
 <p>Using a negative index will return a version of a vector with that
 index’s value removed:</p>
-<pre class="r"><code>countries[-6]</code></pre>
-<pre><code>[1] &quot;Thailand&quot; &quot;Lesotho&quot;  &quot;Suriname&quot; &quot;Canada&quot;   &quot;Bolivia&quot; </code></pre>
+<pre class="r"><code>more_countries[-6]</code></pre>
+<pre><code>[1] &quot;Thailand&quot; &quot;Ghana&quot;    &quot;Suriname&quot; &quot;Canada&quot;   &quot;Bolivia&quot; </code></pre>
 <p>We can remove that value from our vector by overwriting it with this
 expression:</p>
-<pre class="r"><code>countries &lt;- countries[-6]
-countries</code></pre>
-<pre><code>[1] &quot;Thailand&quot; &quot;Lesotho&quot;  &quot;Suriname&quot; &quot;Canada&quot;   &quot;Bolivia&quot; </code></pre>
+<pre class="r"><code>more_countries &lt;- more_countries[-6]
+more_countries</code></pre>
+<pre><code>[1] &quot;Thailand&quot; &quot;Ghana&quot;    &quot;Suriname&quot; &quot;Canada&quot;   &quot;Bolivia&quot; </code></pre>
 <p>We can also explicitly rename or add a value to our index using
 bracket notation:</p>
-<pre class="r"><code>countries[7]&lt;- &quot;Estonia&quot;
-countries</code></pre>
-<pre><code>[1] &quot;Thailand&quot; &quot;Lesotho&quot;  &quot;Suriname&quot; &quot;Canada&quot;   &quot;Bolivia&quot;  NA         &quot;Estonia&quot; </code></pre>
+<pre class="r"><code>more_countries[7] &lt;- &quot;Estonia&quot;
+more_countries</code></pre>
+<pre><code>[1] &quot;Thailand&quot; &quot;Ghana&quot;    &quot;Suriname&quot; &quot;Canada&quot;   &quot;Bolivia&quot;  NA         &quot;Estonia&quot; </code></pre>
 <p>Notice in the operation above that R inserts an <code>NA</code> value
 to extend our vector so that the country “Estonia” is in index 7. This
 may be a good or not-so-good thing depending on how you use this.</p>
@@ -827,7 +846,7 @@ vectors</h2>
 <li>How do we extract the third element of the <code>countries</code>
 vector?</li>
 <li>How do we get the length of the <code>countries</code> vector?</li>
-<li>What function can concatenate other values onto a vector?</li>
+<li>What function concatenates other values onto a vector?</li>
 <li>How could we multiply all the populations by 2?</li>
 </ol>
 </blockquote>
@@ -846,7 +865,7 @@ Solution
 </div>
 <div id="logical-subsetting" class="section level2">
 <h2>Logical Subsetting</h2>
-<p>We saw with <code>countries[on_asia]</code> that we could use a
+<p>We saw with <code>countries[in_asia]</code> that we could use a
 literal logical vector in the bracket notation to extract the
 <code>TRUE</code> indices of a vector. But we can also use a logical
 expression. Let’s say we wanted get all of the countries in our vector
@@ -854,7 +873,7 @@ of country populations that were less than 10,000,000. We could index
 using the ‘&lt;’ (less than) logical operator:</p>
 <pre class="r"><code># Subset populations to those less than 10 million
 populations[populations &lt; 10000000]</code></pre>
-<pre><code>[1] 2108328  575990</code></pre>
+<pre><code>[1] 575990</code></pre>
 <p>In the square brackets we essentially write an expression for a
 logical test of the vector. In this case
 <code>populations &lt; 10000000</code>, which R will then evaluate into
@@ -865,62 +884,72 @@ in R are:</p>
 <tr class="header">
 <th>Operator</th>
 <th>Description</th>
+<th>Example</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>&lt;</td>
 <td>less than</td>
+<td><code>populations &lt; 575990</code></td>
 </tr>
 <tr class="even">
 <td>&lt;=</td>
 <td>less than or equal to</td>
+<td><code>populations &lt;= 575990</code></td>
 </tr>
 <tr class="odd">
 <td>&gt;</td>
 <td>greater than</td>
+<td><code>populations &gt; 1000000</code></td>
 </tr>
 <tr class="even">
 <td>&gt;=</td>
 <td>greater than or equal to</td>
+<td><code>populations &gt;= 38000000</code></td>
 </tr>
 <tr class="odd">
 <td>==</td>
 <td>exactly equal to</td>
+<td><code>continents == 'Africa'</code></td>
 </tr>
 <tr class="even">
 <td>!=</td>
 <td>not equal to</td>
+<td><code>continents != 'Asia'</code></td>
 </tr>
 <tr class="odd">
 <td>!x</td>
 <td>not x</td>
+<td><code>!in_asia</code></td>
 </tr>
 <tr class="even">
 <td>a | b</td>
 <td>a or b</td>
+<td><code>in_asia | !in_asia</code></td>
 </tr>
 <tr class="odd">
 <td>a &amp; b</td>
 <td>a and b</td>
+<td><code>in_asia &amp; !in_asia</code></td>
 </tr>
 </tbody>
 </table>
 <p>There is a related way of doing this which returns the indices which
 are <code>TRUE</code>, using the <code>which()</code> function.</p>
 <pre class="r"><code>which(populations &lt; 10000000)</code></pre>
-<pre><code>[1] 2 3</code></pre>
+<pre><code>[1] 3</code></pre>
 <p>And then subsetting populations with the above expression in the
 square brackets gives the same result:</p>
 <pre class="r"><code># Subset populations to those less than 10 million
 populations[which(populations &lt; 10000000)]</code></pre>
-<pre><code>[1] 2108328  575990</code></pre>
+<pre><code>[1] 575990</code></pre>
 <p>Finally, a useful idea is to replace the hard-coded 10,000,000 with a
 variable. Often we won’t know what inputs and values will be used when
 our code is executed, so we could also do something like:</p>
 <pre class="r"><code>pop_thresh = 10000000
 populations[populations &lt; pop_thresh]</code></pre>
-<pre><code>[1] 2108328  575990</code></pre>
+<pre><code>[1] 575990</code></pre>
 <p>And if we were to use that <code>pop_thresh</code> multiple times in
 our code, and wanted to change it, we’d only have to change one location
 rather than many, thus reducing errors.</p>
@@ -932,40 +961,34 @@ want to know about. First, you can check to see if any of the values of
 your vector are missing (i.e. are <code>NA</code>). The
 <code>is.na()</code> function will return a logical vector, with TRUE
 for any <code>NA</code> value:</p>
-<pre class="r"><code># current value of &#39;countries&#39;:
-# chr [1:7] &quot;Thailand&quot; &quot;Lesotho&quot; &quot;Suriname&quot; &quot;Canada&quot; &quot;Bolivia&quot; NA &quot;Estonia&quot;
-
-is.na(countries)</code></pre>
+<pre class="r"><code>more_countries</code></pre>
+<pre><code>[1] &quot;Thailand&quot; &quot;Ghana&quot;    &quot;Suriname&quot; &quot;Canada&quot;   &quot;Bolivia&quot;  NA         &quot;Estonia&quot; </code></pre>
+<pre class="r"><code>is.na(more_countries)</code></pre>
 <pre><code>[1] FALSE FALSE FALSE FALSE FALSE  TRUE FALSE</code></pre>
-<p>Sometimes, you may wish to find out if a specific value (or several
+<p>This will be a useful function for when you read in data and want to
+see if there are any missing entries.</p>
+<p>Sometimes, you may want to see if a specific value (or several
 values) is present a vector. You can do this using the comparison
 operator <code>%in%</code>, which will return TRUE for any value in your
 collection that is in the vector you are searching:</p>
-<pre class="r"><code># current value of &#39;countries&#39;:
-# chr [1:7] &quot;Thailand&quot; &quot;Lesotho&quot; &quot;Suriname&quot; &quot;Canada&quot; &quot;Bolivia&quot; NA &quot;Estonia&quot;
-
-# test to see if &quot;Lesotho&quot; or &quot;Canada&quot; is in the countries vector
+<pre class="r"><code># test to see if &quot;Ghana&quot; or &quot;Canada&quot; is in the countries vector
 # if you are looking for more than one value, you must pass this as a vector
-c(&quot;Lesotho&quot;, &quot;Canada&quot;) %in% countries</code></pre>
+c(&#39;Ghana&#39;, &#39;Canada&#39;) %in% countries</code></pre>
+<pre><code>[1] TRUE TRUE</code></pre>
+<pre class="r"><code>c(&#39;Ghana&#39;, &#39;Canada&#39;) %in% more_countries</code></pre>
 <pre><code>[1] TRUE TRUE</code></pre>
 <blockquote>
 <h2 id="review-exercise-1">Review Exercise 1</h2>
-<p>Add the following values to the specified vectors:</p>
-<ol style="list-style-type: decimal">
-<li>To the <code>continents</code> vector add: “South America”</li>
-<li>To the <code>populations</code> vector add: 11428245</li>
-</ol>
+<p>Add ‘South America’, NA, and ‘Europe’ to the <code>continents</code>
+vector, and assign it the name <code>more_continents</code>.</p>
 </blockquote>
 <details>
 <summary>
 Solution
 </summary>
-<pre class="r"><code>continents &lt;- c(continents, &quot;South America&quot;) # did you use quotes?
-continents</code></pre>
-<pre><code>[1] &quot;Asia&quot;          &quot;Africa&quot;        &quot;South America&quot; &quot;North America&quot; &quot;South America&quot;</code></pre>
-<pre class="r"><code>populations &lt;- c(populations, 11428245)
-populations</code></pre>
-<pre><code>[1] 69950850  2108328   575990 38436447 11428245</code></pre>
+<pre class="r"><code>more_continents &lt;- c(continents, c(&#39;South America&#39;, NA, &#39;Europe&#39;)) # did you use quotes?
+more_continents</code></pre>
+<pre><code>[1] &quot;Asia&quot;          &quot;Africa&quot;        &quot;South America&quot; &quot;North America&quot; &quot;South America&quot; NA              &quot;Europe&quot;       </code></pre>
 </details>
 <p><br></p>
 <blockquote>
@@ -973,7 +996,7 @@ populations</code></pre>
 <p>Using indexing, create a new vector named <code>combined</code> that
 contains:</p>
 <ul>
-<li>The the 1st value in <code>countries</code></li>
+<li>The 1st value in <code>countries</code></li>
 <li>The 1st value in <code>continents</code></li>
 <li>The 1st value in <code>populations</code></li>
 </ul>
@@ -995,17 +1018,20 @@ combined</code></pre>
 <summary>
 Solution
 </summary>
-<pre class="r"><code>typeof(combined)</code></pre>
+<pre class="r"><code>mode(combined)</code></pre>
 <pre><code>[1] &quot;character&quot;</code></pre>
+<pre class="r"><code>str(combined)</code></pre>
+<pre><code> chr [1:3] &quot;Thailand&quot; &quot;Asia&quot; &quot;69950850&quot;</code></pre>
 </details>
 <p><br></p>
 </div>
 </div>
 <div id="data-reset" class="section level1">
 <h1>Data reset</h1>
-<p>Before we continue, let’s reset some vectors:</p>
+<p>Before we continue, let’s reset some vectors so we’re all on the same
+page for the next lesson:</p>
 <pre class="r"><code># Create a vector of country names
-countries &lt;- c(&quot;Thailand&quot;, &quot;Lesotho&quot;, &quot;Suriname&quot;, &quot;Canada&quot;)
+countries &lt;- c(&quot;Thailand&quot;, &quot;Ghana&quot;, &quot;Suriname&quot;, &quot;Canada&quot;)
 
 # Continent of country
 continents &lt;- c(&#39;Asia&#39;, &#39;Africa&#39;, &#39;South America&#39;, &#39;North America&#39;)
@@ -1014,7 +1040,7 @@ continents &lt;- c(&#39;Asia&#39;, &#39;Africa&#39;, &#39;South America&#39;, &#
 populations &lt;- c(69950850, 2108328, 575990, 38436447) # Source: Wikipedia
 
 # Logical vector of Asian countries
-on_asia &lt;- c(TRUE, FALSE, FALSE, FALSE)</code></pre>
+in_asia &lt;- c(TRUE, FALSE, FALSE, FALSE)</code></pre>
 </div>
 <div id="bonus-material-matrices-and-lists" class="section level1">
 <h1>Bonus material: Matrices and Lists</h1>
@@ -1028,7 +1054,7 @@ function and specifying the number of rows (or columns), as with:</p>
 country_matrix</code></pre>
 <pre><code>     [,1]       [,2]      
 [1,] &quot;Thailand&quot; &quot;Suriname&quot;
-[2,] &quot;Lesotho&quot;  &quot;Canada&quot;  </code></pre>
+[2,] &quot;Ghana&quot;    &quot;Canada&quot;  </code></pre>
 <pre class="r"><code>mode(country_matrix)</code></pre>
 <pre><code>[1] &quot;character&quot;</code></pre>
 <pre class="r"><code>class(country_matrix)</code></pre>
@@ -1063,7 +1089,7 @@ vectors or other lists. The best way to see this is with an example:</p>
 <pre class="r"><code>country_list = list(countries, continents, populations)
 country_list</code></pre>
 <pre><code>[[1]]
-[1] &quot;Thailand&quot; &quot;Lesotho&quot;  &quot;Suriname&quot; &quot;Canada&quot;  
+[1] &quot;Thailand&quot; &quot;Ghana&quot;    &quot;Suriname&quot; &quot;Canada&quot;  
 
 [[2]]
 [1] &quot;Asia&quot;          &quot;Africa&quot;        &quot;South America&quot; &quot;North America&quot;
@@ -1082,13 +1108,13 @@ have to be the same.</p>
 notation:</p>
 <pre class="r"><code>country_list[1]</code></pre>
 <pre><code>[[1]]
-[1] &quot;Thailand&quot; &quot;Lesotho&quot;  &quot;Suriname&quot; &quot;Canada&quot;  </code></pre>
+[1] &quot;Thailand&quot; &quot;Ghana&quot;    &quot;Suriname&quot; &quot;Canada&quot;  </code></pre>
 <pre class="r"><code>mode(country_list[1])</code></pre>
 <pre><code>[1] &quot;list&quot;</code></pre>
 <p>If we wanted to access the first element and <strong>return an atomic
 vector</strong>, we would use double-bracket notation:</p>
 <pre class="r"><code>country_list[[1]]</code></pre>
-<pre><code>[1] &quot;Thailand&quot; &quot;Lesotho&quot;  &quot;Suriname&quot; &quot;Canada&quot;  </code></pre>
+<pre><code>[1] &quot;Thailand&quot; &quot;Ghana&quot;    &quot;Suriname&quot; &quot;Canada&quot;  </code></pre>
 <pre class="r"><code>mode(country_list[[1]])</code></pre>
 <pre><code>[1] &quot;character&quot;</code></pre>
 <blockquote>
