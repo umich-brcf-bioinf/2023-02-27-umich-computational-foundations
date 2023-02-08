@@ -28,7 +28,7 @@ body, td {
 ---
 
 
-#### Day 1 (Chris & Travis)
+### Day 1 (Chris & Travis)
 | Time | Topic |
 | :---  | :----------------------------------------------------------- |
 |  9:00 | [Introductions and Startup](Module00_Introduction.html) |
@@ -39,7 +39,7 @@ body, td {
 |       | [Redirection](bash-04-redirection.html) |
 |  1:00 | Day 1 concludes |
 
-#### Day 2 (Travis & Raymond)
+### Day 2 (Travis & Raymond)
 | Time | Topic |
 | :-----  | :------------------------------------ |
 |  9:00 | Review |
