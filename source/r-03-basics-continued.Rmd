@@ -63,50 +63,54 @@ as.integer(continents_factor)
 
 Notice that the integer representation of the vector changed order, because the levels changed order. This will be useful later in the RNA-seq Demystified lessons when we discuss testing for differential expression and the assumptions DESeq2 makes about what factor level is the "reference".
 
+> ## Tip: Treating objects as categories without changing their mode
+>
+> You don't have to make an object a factor to get the benefits of treating an object as a factor. See what happens when you use the `as.factor()` function on `continents`. To generate a tally, you can sometimes also use the `table()` function; though sometimes you may need to combine both (i.e. `table(as.factor(continents))`)
+
 # Data Frames
 
 Data frames group vectors together into a two-dimensional table, where each vector becomes a column of the table. The data types within each column must be the same (they are vectors after all), **but the columns can be of different data types**. Let's construct our first data frame using some vectors we have laying around. Here we will include column names from the start:
 
 ```{r}
-country_df = data.frame(countries = countries, continents = continents, populations = populations)
-country_df
-dim(country_df)
+countries_df = data.frame(country = countries, continent = continents, population = populations)
+countries_df
+dim(countries_df)
 ```
 
 Since data frames are two-dimensional, we have to specify both the row and column to extract specific entries, as in:
 
 ```{r}
 # Return the element in the second row, third column
-country_df[2, 3]
+countries_df[2, 3]
 ```
 
 Since the columns of the data frame are named, we can also use those instead:
 
 ```{r}
-# Return the element in the Lesotho row of the population column
-country_df[2, 'populations']
+# Return the element in the Ghana row of the population column
+countries_df[2, 'population']
 ```
 
 To access an entire row or column, we specify just the row or column index, as with:
 
 ```{r}
 # Access the third row by index
-country_df[3, ]
+countries_df[3, ]
 ```
 
 And it is the same with columns:
 
 ```{r}
 # Access the second column by index
-country_df[, 2]
+countries_df[, 2]
 # By name
-country_df[, 'continents']
+countries_df[, 'continent']
 ```
 
 Finally, data frames have another way to access columns using "dollar-sign notation":
 
 ```{r}
-country_df$continents
+countries_df$continent
 ```
 
 # Working with spreadsheets
@@ -123,12 +127,7 @@ The simplest principle of **Tidy data** is that we have one row in our spreadshe
 
 **3. Trust but verify**
 
-Finally, while you don't need to be paranoid about data, you should have a plan for how you will prepare it for analysis. You probably already have a lot of intuition, expectations, assumptions about your data - the range of values you expect, how many values should have been recorded, etc. Of course, as the data get larger our human ability to keep track will start to fail (and yes, it can fail for small data sets too). R will help you to examine your data so that you can have greater confidence in your analysis, and its reproducibility.
-
-> ## Tip: Changes in R don't overwrite the original file
->
-> When you work with data in R, you are not changing the original file you loaded that data from. This is different than (for example) working with a spreadsheet program where changing the value of the cell leaves you one "save"-click away from overwriting the original file. You have to purposely use a writing function (e.g. `write.csv()`) to save data loaded into R. In that case, be sure to save the manipulated data into a new file. More on this later in the lesson.
-
+Finally, you don't need to be paranoid about data, but you should have a plan for how you will prepare it for analysis. You probably already have a lot of intuition, expectations, assumptions about your data - the range of values you expect, how many values should have been recorded, etc. Of course, as the data get larger our human ability to keep track will start to fail (it can fail for small data sets too). R can help you to examine your data so that you can have greater confidence in your analysis, and its reproducibility.
 
 ## Importing tabular data into R
 
@@ -174,9 +173,27 @@ One of the first things you should notice is that in the Environment window, you
 
 <img src="images/rstudio_dataframeview.png" alt="rstudio data frame view" style="width: 1000px;"/>
 
-## Summarizing, subsetting, and structure of a data frame
+> ## Tip: Changes in R don't overwrite the original file
+>
+> When you work with data in R, you are not changing the original file you loaded that data from. This is different than (for example) working with a spreadsheet program where changing the value of the cell leaves you one "save"-click away from overwriting the original file. You have to purposely use a writing function (e.g. `write.csv()`) to save data loaded into R. In that case, be sure to save the manipulated data into a new file. More on this later in the lesson.
 
-A **data frame is the standard way in R to store tabular data**. Remember, a data frame is a collection of vectors, all of which have the same length. Using only two functions, we can learn a lot about our data frame including some summary statistics as well as well as the "structure" of the data frame. Let's examine what each of these functions can tell us:
+## Summarizing, subsetting, and reordering a data frame
+
+A **data frame is the standard way in R to store tabular data**. A data frame is a collection of vectors of the same length. Let's use the `str()` (structure) function to look a little more closely at how data frames work:
+
+```{r, purl = FALSE}
+## get the structure of a data frame
+str(gapminder)
+```
+
+Some things to notice:
+
+- the object type `data.frame` is displayed in the first row along with its dimensions, in this case 1704 observations (rows) and 6 variables (columns)
+- Each variable (column) has a name (e.g. `country`). This is followed by the object mode (e.g. chr, int, etc.). Notice that before each variable name there is a `$` - which is a hint as to how one can access these columns, as we saw when we first introduced data frames.
+
+### Summarizing
+
+We can get a birds eye view of a data frame by using the `summary()` function. Depending on the type of data in the columns, `summary()` will do particular things:
 
 ```{r, purl = FALSE}
 ## get summary statistics on a data frame
@@ -185,29 +202,37 @@ summary(gapminder)
 
 Our data frame has 6 variables, so we get 6 fields that summarize the data. The `year`, `pop`, `lifeExp` and `gdpPercap` variables are numerical data and so you get summary statistics on the min and max values for these columns, as well as mean, median, and interquartile ranges. The other variables, `country` and `continent`, are treated as characters data (more on this in a bit).
 
-Now let's use the `str()` (structure) function to look a little more closely at how data frames work:
-
-```{r, purl = FALSE}
-## get the structure of a data frame
-str(gapminder)
-```
-
-Some things to notice.
-
-- the object type `data.frame` is displayed in the first row along with its dimensions, in this case 1704 observations (rows) and 6 variables (columns)
-- Each variable (column) has a name (e.g. `country`). This is followed by the object mode (e.g. chr, int, etc.). Notice that before each variable name there is a `$` - which is a hint as to how one can access these columns, as we saw when we first introduced data frames.
+### Subsetting
 
 We saw how to subset a data frame in the previous section, but in all those examples we printed values to the screen. You can create a new data frame object by assigning them to a new object name:
 
 ```{r, purl = FALSE}
 # create a new data frame containing only observations from India
-india_subset <- gapminder[gapminder$country == "India",]
+india_subset <- gapminder[gapminder$country == 'India',]
+india_subset
 
 # check the dimension of the data frame
 dim(india_subset)
 
 # get a summary of the data frame
 summary(india_subset)
+```
+
+### Reordering
+
+With vectors we saw the `sort()` function returned the reordered vector, and that the `order()` function returned the indices giving the order of the reordered vector. Let's use the `order()` function to change the ordering of `india_subset` so that the most recent years are at the top of the table.
+
+First look at the help for `?sort` and `?order` and note the `decreasing` parameter. If we want the years to be decreasing, we should set this parameter to `TRUE`.
+
+```{r, purl = FALSE}
+sort(india_subset$year, decreasing = TRUE)
+```
+
+This is the right ordering we want, but but we want the indices so that we can reorder the rows of `india_subset`. Using `order()` to give the row indices in the correct order gets us where we want to go:
+
+```{r, purl = FALSE}
+india_subset_decreasing = india_subset[order(india_subset$year, decreasing = TRUE), ]
+india_subset_decreasing
 ```
 
 ## Coercing data
@@ -227,10 +252,6 @@ str(gapminder)
 ```
 
 Notice that we got some additionally useful information from `summary()` from the coercion. Namely, we get the number of entries in `gapminder` that are on each continent.
-
-> ## Tip: Treating objects as categories without changing their mode
->
-> You don't have to make an object a factor to get the benefits of treating an object as a factor. See what happens when you use the `as.factor()` function on `gapminder$continent`. To generate a tally, you can sometimes also use the `table()` function; though sometimes you may need to combine both (i.e. `table(as.factor(object))`)
 
 > ## Note: StringsAsFactors
 >
