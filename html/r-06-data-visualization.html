@@ -724,7 +724,7 @@ plot as an object to use later.)</p>
     theme_bw()
 life_over_time_plot</code></pre>
 <p><img src="fig/06-second_line_plot-1.png" width="816" style="display: block; margin: auto;" /></p>
-<p>Voila, we’ve got ourselves a spaghetti plot!</p>
+<p>And now we have a spaghetti plot!</p>
 <p>As we did with the GDP per capita vs Life expectancy plot above,
 let’s reach into the <code>gapminder</code> data and sanity check some
 of the outliers we see in this plot. It looks like there were two
@@ -747,11 +747,27 @@ life expectancy, looking for the lowest value.</p>
  9 Gambia         1977   608274 Africa       41.8      885.   538173615.
 10 Somalia        1977  4353666 Africa       42.0     1451.  6317136770.
 # … with 132 more rows</code></pre>
-<p>It looks like the minimum life expectancy this year is Cambodia at
-31.2 years. This actually highlights something about our plot that
-perhaps we didn’t consider before. The y-axis is not from 0 to 80, but
-is actually from 20 to 80. Ggplot2 has made a choice about the y-axis
-limits that might have slipped past our noticing.</p>
+<pre class="r"><code>gapminder %&gt;% filter(year == 1992) %&gt;% arrange(lifeExp)</code></pre>
+<pre><code># A tibble: 142 × 7
+   country          year      pop continent lifeExp gdpPercap    total_gdp
+   &lt;chr&gt;           &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+ 1 Rwanda           1992  7290203 Africa       23.6      737.  5373379682.
+ 2 Sierra Leone     1992  4260884 Africa       38.3     1069.  4553590872.
+ 3 Somalia          1992  6099799 Africa       39.7      927.  5654271489.
+ 4 Angola           1992  8735988 Africa       40.6     2628. 22956828370.
+ 5 Liberia          1992  1912974 Africa       40.8      637.  1217843092.
+ 6 Afghanistan      1992 16317921 Asia         41.7      649. 10595901589.
+ 7 Guinea-Bissau    1992  1050938 Africa       43.3      746.   783516181.
+ 8 Mozambique       1992 13160731 Africa       44.3      411.  5407702568.
+ 9 Burundi          1992  5809236 Africa       44.7      632.  3669693671.
+10 Congo Dem. Rep.  1992 41672143 Africa       45.5      458. 19074139152.
+# … with 132 more rows</code></pre>
+<p>It looks like the minimum life expectancy for 1977 is Cambodia at
+31.2 years, and for 1992 is Rwanda at 23.6 years. This highlights
+something about our plot that perhaps we didn’t consider before. The
+y-axis is not from 0 to 80, but is actually from 20 to 80. Ggplot2 has
+made a choice about the y-axis limits that might have slipped past our
+noticing.</p>
 </div>
 <div id="saving-plots-to-file" class="section level1">
 <h1>Saving plots to file</h1>
@@ -817,7 +833,9 @@ different categories are plotted side-by-side rather than stacked, as
 above.</p>
 <pre class="r"><code>p1 = ggplot(data = gapminder, aes(x = year, y = total_gdp, fill = continent)) +
     geom_col(position = &#39;dodge&#39;) +
-    labs(title = &#39;Global GDP Over Time (by continent)&#39;, x = &#39;Year&#39;, y = &#39;Total GDP&#39;, fill = &#39;Continent&#39;)</code></pre>
+    labs(title = &#39;Global GDP Over Time (by continent)&#39;, x = &#39;Year&#39;, y = &#39;Total GDP&#39;, fill = &#39;Continent&#39;)
+p1</code></pre>
+<p><img src="fig/06-barplot-dodge-1.png" width="816" style="display: block; margin: auto;" /></p>
 <p>This plot is theoretically giving us a sense for aggregate Total GDP
 by continent per year, but we could also get this data using the
 <code>group_by()</code> and <code>summarize()</code> functions.</p>

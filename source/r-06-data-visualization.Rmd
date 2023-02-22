@@ -297,7 +297,7 @@ life_over_time_plot <- ggplot(data = gapminder, aes(x = year, y = lifeExp, color
 life_over_time_plot
 ```
 
-Voila, we've got ourselves a spaghetti plot!
+And now we have a spaghetti plot!
 
 As we did with the GDP per capita vs Life expectancy plot above, let's reach into the `gapminder` data and sanity check some of the outliers we see in this plot. It looks like there were two serious dips in life expectancy for two countries. One in 1977 and one in 1992. Let's see if we can figure out what countries those are.
 
@@ -305,9 +305,10 @@ Starting with 1977, we might filter on that year, and then order the life expect
 
 ```{r outlier-finding-2}
 gapminder %>% filter(year == 1977) %>% arrange(lifeExp)
+gapminder %>% filter(year == 1992) %>% arrange(lifeExp)
 ```
 
-It looks like the minimum life expectancy this year is Cambodia at 31.2 years. This actually highlights something about our plot that perhaps we didn't consider before. The y-axis is not from 0 to 80, but is actually from 20 to 80. Ggplot2 has made a choice about the y-axis limits that might have slipped past our noticing.
+It looks like the minimum life expectancy for 1977 is Cambodia at 31.2 years, and for 1992 is Rwanda at 23.6 years. This highlights something about our plot that perhaps we didn't consider before. The y-axis is not from 0 to 80, but is actually from 20 to 80. Ggplot2 has made a choice about the y-axis limits that might have slipped past our noticing.
 
 # Saving plots to file
 
@@ -358,6 +359,7 @@ Let's try to verify that these figures actually make sense. First let's introduc
 p1 = ggplot(data = gapminder, aes(x = year, y = total_gdp, fill = continent)) +
     geom_col(position = 'dodge') +
     labs(title = 'Global GDP Over Time (by continent)', x = 'Year', y = 'Total GDP', fill = 'Continent')
+p1
 ```
 
 This plot is theoretically giving us a sense for aggregate Total GDP by continent per year, but we could also get this data using the `group_by()` and `summarize()` functions.
