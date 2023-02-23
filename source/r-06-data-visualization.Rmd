@@ -239,7 +239,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color = continent)) +
 
 # Line plots
 
-We've explored a lot of options with the `geom_point()` geometry, but we should expand our horizons to other geometries. Let's first create a subset of the `gapminder` data limited only to Poland and plot the life expectancy over all the years for which we have data as a line plot.
+We've explored a lot of options with the `geom_point()` geometry, but we should expand our horizons to other geometries. Let's first create a subset of the `gapminder` data limited only to Poland and plot the GDP per capita over all the years for which we have data as a line plot.
 
 > ## Exercise
 >
@@ -261,58 +261,38 @@ poland
 <details>
 <summary>Solution</summary>
 ```{r lineplot-challenge, purl=FALSE}
-poland_plot <- ggplot(data = poland, aes(x = year, y = lifeExp)) +
+poland_plot <- ggplot(data = poland, aes(x = year, y = gdpPercap)) +
     geom_line() +
-    labs(x = 'Year', y = 'Life Expectancy', title = 'Polish Life Expectancy Over Time')
+    labs(x = 'Year', y = 'GDP per Capita', title = 'Polish GDP per Capita Over Time')
 poland_plot
 ```
 </details>
 <br>
 
-This is excellent! Now let's consider plotting a similar line graph of life expectancy across time for **all countries** on the **same axes**. Moreover, let's color the lines by their continent. Perhaps we can even take as a guide our scatterplot from above:
+This is excellent! Now let's consider plotting a similar line graph of GDP per capita across time for **all countries** on the **same axes**. And let's color the lines by their continent. Perhaps we can take our line plot above as a guide:
 
 ```{r eval = FALSE}
-ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color = continent)) +
-    geom_point() +
-    labs(title = 'GDP per Capita vs Life Expectancy', x = 'GDP per Capita', y = 'Life Expectancy') +
-    theme_bw()
-```
-
-We might just replace `gdpPercap` with `lifeExp` and `geom_point()` with `geom_line()` and hopefully get what we want. Let's give it a shot:
-
-```{r first_line_plot, purl=FALSE}
-ggplot(data = gapminder, aes(x = year, y = lifeExp, color = continent)) +
+ggplot(data = gapminder, aes(x = year, y = gdpPercap, color = continent)) +
     geom_line() +
-    labs(title = 'Life Expectancy Over Time by Country', x = 'Year', y = 'Life Expectancy') +
+    labs(title = 'GDP per Capita Over Time by Country', x = 'Year', y = 'GDP per Capita') +
     theme_bw()
 ```
 
-This doesn't really look like what we expected. I expected a line for each country, but I can't really explain how ggplot decided to create the lines. There is a parameter of `aes()` called `group` which can help us. It will tell ggplot to first group the data by a column of the data, in this we probably want `country`. What happens if we try that? (Let's also save this plot as an object to use later.)
+We were hoping for lines connecting corresponding country data, but we didn't tell `ggplot2` anything about country. There is a parameter of `aes()` called `group` which can help us. It will tell ggplot to first group the data by a column of the data, in this we probably want `country`. What happens if we try that? (Let's also save this plot as an object to use later.)
 
 ```{r second_line_plot, purl=FALSE}
-life_over_time_plot <- ggplot(data = gapminder, aes(x = year, y = lifeExp, color = continent, group = country)) +
+gdp_over_time_plot <- ggplot(data = gapminder, aes(x = year, y = gdpPercap, color = continent, group = country)) +
     geom_line() +
-    labs(title = 'Life Expectancy Over Time by Country', x = 'Year', y = 'Life Expectancy') +
+    labs(title = 'GDP per Capita Over Time by Country', x = 'Year', y = 'GDP per Capita') +
     theme_bw()
-life_over_time_plot
+gdp_over_time_plot
 ```
 
 And now we have a spaghetti plot!
 
-As we did with the GDP per capita vs Life expectancy plot above, let's reach into the `gapminder` data and sanity check some of the outliers we see in this plot. It looks like there were two serious dips in life expectancy for two countries. One in 1977 and one in 1992. Let's see if we can figure out what countries those are.
-
-Starting with 1977, we might filter on that year, and then order the life expectancy, looking for the lowest value.
-
-```{r outlier-finding-2}
-gapminder %>% filter(year == 1977) %>% arrange(lifeExp)
-gapminder %>% filter(year == 1992) %>% arrange(lifeExp)
-```
-
-It looks like the minimum life expectancy for 1977 is Cambodia at 31.2 years, and for 1992 is Rwanda at 23.6 years. This highlights something about our plot that perhaps we didn't consider before. The y-axis is not from 0 to 80, but is actually from 20 to 80. Ggplot2 has made a choice about the y-axis limits that might have slipped past our noticing.
-
 # Saving plots to file
 
-Let's take a brief pause from experimenting with plots and learn how to save plots as image files. We should have three plots that we've saved as objects: `gdp_life_plot`, `poland_plot`, and `life_over_time_plot`. Let's save these plots as files using the `ggsave()` function.
+Let's take a brief pause from experimenting with plots and learn how to save plots as image files. We should have three plots that we've saved as objects: `gdp_life_plot`, `poland_plot`, and `gdp_over_time_plot`. Let's save these plots as files using the `ggsave()` function.
 
 The `ggsave()` function is an easy way to specify which plots to save, at what location, at what size and resolution, and in what format. Let's first have a look at the help file to figure out which parameters we should pay attention to.
 
@@ -328,7 +308,25 @@ ggsave(filename = 'gdp_life_plot.png', plot = gdp_life_plot, width = 6, height =
 
 # Bar plots
 
-What if we wanted to plot the global total GDP per year as a bar plot, separated by continent? Let's first take a look at the help function for `geom_bar()`:
+Let's next create a bar plot that shows the global GDP over time with continent-wise contributions separated by color. Let's first mold the fine-grained `gapminder` data into a summarized form where we can see the totals per continent per year directly rather than try to rely on `ggplot2` doing the "right thing".
+
+```{r summarize-gapminder, purl = FALSE}
+gdp_by_continent_year = gapminder %>%
+    group_by(continent, year) %>%
+    summarize(aggregate_gdp = sum(total_gdp))
+gdp_by_continent_year
+```
+
+Let's also summarize the data by year only, we'll use this in a moment:
+
+```{r summarize-gapminder2, purl = FALSE}
+gdp_by_year = gapminder %>%
+    group_by(year) %>%
+    summarize(aggregate_gdp = sum(total_gdp))
+gdp_by_year
+```
+
+Now, to build our plot, let's look at the help function for `geom_bar()`:
 
 ~~~
 ?geom_bar
@@ -339,84 +337,52 @@ Looking through the description:
 - `geom_bar()` makes the height of the bar proportional to the number of cases in each group.
 - If you want the heights of the bars to represent values in the data, use `geom_col()` instead.
 
-Since we want the height of the bars to represent the values of the `total_gdp` column, we should be using `geom_col()`, a relative of `geom_bar()`. To make this graph, it's clear we want the `year` on the x-axis, the `total_gdp` on the y-axis, and if we want to separate the continents apart in the graph, we will use a new aesthetic parameter called `fill` and assign it `continent`.
+Since we want the height of the bars to represent the values of the `aggregate_gdp` column, we should be using `geom_col()`, a relative of `geom_bar()`. To make this graph, it's clear we want the `year` on the x-axis, the `aggregate_gdp` on the y-axis, and if we want to separate the continents apart in the graph, we will use a new aesthetic parameter called `fill` and assign it `continent`.
 
 ```{r barplot1, purl=FALSE}
-ggplot(data = gapminder, aes(x = year, y = total_gdp, fill = continent)) + geom_col()
+ggplot(data = gdp_by_continent_year, aes(x = year, y = aggregate_gdp, fill = continent)) + geom_col()
 ```
 
-This is a good start, and from previous examples we know how we might alter the x and y axis labels, but how can we edit the legend title? This is a common task when creating publication figures because the legend title will inherit the name of the column, which is usually some shorthand. We can use the same `labs()` function we used before, and specify a value for `fill`, to go with the `fill` parameter in `aes()` above. Let's save this plot as "total_gdp_plot".
+This is a good start. The x-axis doesn't label each bar with the year, which can make the graph difficult to read. This is because in `gdp_by_continent_year` the `year` column is considered an integer. We could coerce the column to a character and remake the graph.
+
+```{r mutuate-year, purl = FALSE}
+gdp_by_continent_year$year = as.character(gdp_by_continent_year$year)
+```
+
+And while we're at it, let's clean up the labels a bit, and save the plot as an object.
 
 ```{r barplot2, purl=FALSE}
-ggplot(data = gapminder, aes(x = year, y = total_gdp, fill = continent)) +
+aggregate_gdp_plot = ggplot(data = gdp_by_continent_year, aes(x = year, y = aggregate_gdp, fill = continent)) +
     geom_col() +
-    labs(title = 'Global GDP Over Time (by continent)', x = 'Year', y = 'Total GDP', fill = 'Continent')
+    labs(title = 'Global GDP Over Time (by continent)', x = 'Year', y = 'Aggregate GDP', fill = 'Continent')
+aggregate_gdp_plot
 ```
 
-Let's try to verify that these figures actually make sense. First let's introduce the idea of `position = 'dodge'` where the different categories are plotted side-by-side rather than stacked, as above.
+Let's verify that this plot is summing up the global GDP as we'd expect. We created `gdp_by_year`:
 
-```{r barplot-dodge, purl = FALSE}
-p1 = ggplot(data = gapminder, aes(x = year, y = total_gdp, fill = continent)) +
-    geom_col(position = 'dodge') +
-    labs(title = 'Global GDP Over Time (by continent)', x = 'Year', y = 'Total GDP', fill = 'Continent')
-p1
+```{r show-gdp-per-year, purl = FALSE}
+gdp_by_year
 ```
 
-This plot is theoretically giving us a sense for aggregate Total GDP by continent per year, but we could also get this data using the `group_by()` and `summarize()` functions.
+We could spot check these values by eye, or we could add a layer to the plot quickly in the form of a horizontal line to see if the data matches up with `geom_hline()`. It looks like in 1977, global GDP was around $2.23 trillion, so if we add a horizontal line at that value, it should hit the top of the 1977 bar.
 
-```{r group-summarize, purl = FALSE}
-gdp_by_continent_year = gapminder %>% group_by(continent, year) %>% summarize(aggregate_gdp = sum(total_gdp))
+```{r bar-plot-check, purl = FALSE}
+aggregate_gdp_plot + geom_hline(yintercept = 2.23e13)
 ```
 
-In particular, let's look at the Americas and Asia in turn:
+That looks correct, suggesting that the plot matches our expectations!
 
-```{r america, purl = FALSE}
-gdp_by_continent_year %>% filter(continent == 'Americas')
-```
+## Alternate `position`same
 
-Matching these numbers to the plot is a little cumbersome, but we could take advantage of our saved plot object above to quickly add horizontal lines at the values and see if they match. For example, let's plot a horizontal line at 1.22e13 and see if it intersects around 1992, like we would expect.
+In the above plot we "stacked" the continents on top of each other and that showed us the aggregate global GDP, but we're left with a more qualitiative sense for each continent's GDP over time because of the stacked nature of the plot (i.e. from the stacked plot, what is the aggregate Asian GDP in 2007?). There is a `position` parameter in `geom_bar()` and `geom_col()` which controls this behavior.
 
-```{r americas-check, purl = FALSE}
-p1 + geom_hline(yintercept = 1.22e13)
-```
-
-This doesn't appear to be correct, because the horizontal line intersects our data for the last year, 2007, when according to our summarization, should occur in 1992. So ggplot2 is doing something unexpected here, and it doesn't seem correct.
-
-However, we've already summarized the GDP by continent by year in our `gdp_by_continent_by_year` object, so let's use that as the basis for a plot instead.
-
-```{r barplot-dodge2, purl = FALSE}
-p2 = ggplot(data = gdp_by_continent_year, aes(x = year, y = aggregate_gdp, fill = continent)) +
-    geom_col(position = 'dodge') +
-    labs(title = 'Global GDP Over Time (by continent)', x = 'Year', y = 'Total GDP', fill = 'Continent')
-```
-
-And now let's add that horizontal line and see if things make sense now:
-
-```{r barplot-dodge-line, purl = FALSE}
-p2 + geom_hline(yintercept = 1.22e13)
-```
-
-Indeed, that makes a lot more sense. Moreover, if we look at the data for Asia, we see in 2007 that we just reach over 2 trillion.
-
-```{r asia-subset, purl = FALSE}
-gdp_by_continent_year %>% filter(continent == 'Asia')
-```
-
-And now if we want to stack the bars again, we can do that:
-
-```{r barplot-stack, purl = FALSE}
+```{r bar-plot-dodge, purl = FALSE}
 ggplot(data = gdp_by_continent_year, aes(x = year, y = aggregate_gdp, fill = continent)) +
-    geom_col(position = 'stack') +
-    labs(title = 'Global GDP Over Time (by continent)', x = 'Year', y = 'Total GDP', fill = 'Continent')
+    geom_col(position = 'dodge') +
+    labs(title = 'Global GDP Over Time (by continent)', x = 'Year', y = 'Aggregate GDP', fill = 'Continent')
 ```
 
-And if we want to make sure we're approaching Global GDP of $6 trillion, we can again, `group_by()` and `summarize()`:
-
-```{r verify-gdp, purl = FALSE}
-gdp_by_continent_year %>% group_by(year) %>% summarize(aggregate_yearly_gdp = sum(aggregate_gdp))
-```
-
-Which looks correct!
+Now we can directly see each continent's aggregate GDP over time.
 
 # Summary
 
