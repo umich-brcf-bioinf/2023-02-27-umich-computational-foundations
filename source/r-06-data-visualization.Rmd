@@ -372,7 +372,7 @@ aggregate_gdp_plot + geom_hline(yintercept = 2.23e13)
 
 That looks correct, suggesting that the plot matches our expectations!
 
-## Alternate `position`same
+## Alternate `position`s
 
 In the above plot we "stacked" the continents on top of each other and that showed us the aggregate global GDP, but we're left with a more qualitiative sense for each continent's GDP over time because of the stacked nature of the plot (i.e. from the stacked plot, what is the aggregate Asian GDP in 2007?). There is a `position` parameter in `geom_bar()` and `geom_col()` which controls this behavior.
 
