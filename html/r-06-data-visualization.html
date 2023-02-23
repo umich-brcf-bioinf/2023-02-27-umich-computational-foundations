@@ -13,7 +13,7 @@
 
 <title>Data Visualization with ggplot2</title>
 
-<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
@@ -350,11 +350,6 @@ id="toc-exploring-other-aesthetics">Exploring other aesthetics</a>
 <li><a href="#saving-plots-to-file" id="toc-saving-plots-to-file">Saving
 plots to file</a></li>
 <li><a href="#bar-plots" id="toc-bar-plots">Bar plots</a></li>
-<li><a href="#box-plots" id="toc-box-plots">Box plots</a>
-<ul>
-<li><a href="#rotating-axis-labels"
-id="toc-rotating-axis-labels">Rotating axis labels</a></li>
-</ul></li>
 <li><a href="#summary" id="toc-summary">Summary</a></li>
 <li><a href="#resources" id="toc-resources">Resources</a></li>
 </ul>
@@ -585,6 +580,37 @@ this lesson.</p>
 # When saving a plot as an object, RStudio won&#39;t automatically display it
 gdp_life_plot</code></pre>
 <p><img src="fig/06-size-by-pop-1.png" width="816" style="display: block; margin: auto;" /></p>
+<p>In this plot it looks like there are some outlier countries with very
+high GDP per capita, with mid-range life expectancy. How can we figure
+out what those countries might be? We have the <code>gapminder</code>
+data, and we’ve learned previously how to <code>filter()</code> the data
+based on certain conditions, so let’s practice and see if we can find
+those outliers.</p>
+<blockquote>
+<h2 id="exercise">Exercise</h2>
+<p>Use the <code>filter()</code> function on the <code>gapminder</code>
+data to help determine what four countries lie furthest to the right in
+the above plot.</p>
+</blockquote>
+<details>
+<summary>
+Solution
+</summary>
+<pre class="r"><code>gapminder %&gt;% filter(gdpPercap &gt; 90000)</code></pre>
+<pre><code># A tibble: 4 × 7
+  country  year    pop continent lifeExp gdpPercap    total_gdp
+  &lt;chr&gt;   &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+1 Kuwait   1952 160000 Asia         55.6   108382. 17341176464 
+2 Kuwait   1957 212846 Asia         58.0   113523. 24162944745.
+3 Kuwait   1962 358266 Asia         60.5    95458. 34199395868.
+4 Kuwait   1972 841934 Asia         67.7   109348. 92063687055.</code></pre>
+So Kuwait, in the years 1952, 1957, 1962, and 1972 are the outliers.
+With this exercise we’ve also done a quick sanity check on the plot. We
+implicitly verified three pieces of information: the outliers are
+considered “Asian” countries so the color is correct, the life
+expectencies match what is plotted, and so does the GDP per capita.
+</details>
+<p><br></p>
 </div>
 <div id="faceting" class="section level3">
 <h3>Faceting</h3>
@@ -620,7 +646,7 @@ first create a subset of the <code>gapminder</code> data limited only to
 Poland and plot the life expectancy over all the years for which we have
 data as a line plot.</p>
 <blockquote>
-<h2 id="exercise">Exercise</h2>
+<h2 id="exercise-1">Exercise</h2>
 <p>Use the <code>filter()</code> function to select only the Poland data
 from the <code>gapminder</code> data, and save it as as an object named
 “poland”.</p>
@@ -649,7 +675,7 @@ poland</code></pre>
 </details>
 <p><br></p>
 <blockquote>
-<h2 id="exercise-1">Exercise</h2>
+<h2 id="exercise-2">Exercise</h2>
 <p>For the <code>poland</code> subset of the <code>gapminder</code>
 data, plot the life expectancy as a function of the year. Make sure to
 label the axes and give the plot an appropriate title. Make sure to save
@@ -698,7 +724,50 @@ plot as an object to use later.)</p>
     theme_bw()
 life_over_time_plot</code></pre>
 <p><img src="fig/06-second_line_plot-1.png" width="816" style="display: block; margin: auto;" /></p>
-<p>Voila, we’ve got ourselves a spaghetti plot.</p>
+<p>And now we have a spaghetti plot!</p>
+<p>As we did with the GDP per capita vs Life expectancy plot above,
+let’s reach into the <code>gapminder</code> data and sanity check some
+of the outliers we see in this plot. It looks like there were two
+serious dips in life expectancy for two countries. One in 1977 and one
+in 1992. Let’s see if we can figure out what countries those are.</p>
+<p>Starting with 1977, we might filter on that year, and then order the
+life expectancy, looking for the lowest value.</p>
+<pre class="r"><code>gapminder %&gt;% filter(year == 1977) %&gt;% arrange(lifeExp)</code></pre>
+<pre><code># A tibble: 142 × 7
+   country        year      pop continent lifeExp gdpPercap    total_gdp
+   &lt;chr&gt;         &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+ 1 Cambodia       1977  6978607 Asia         31.2      525.  3663574552.
+ 2 Sierra Leone   1977  3140897 Africa       36.8     1348.  4234824811.
+ 3 Guinea-Bissau  1977   745228 Africa       37.5      765.   569895200.
+ 4 Afghanistan    1977 14880372 Asia         38.4      786. 11697659231.
+ 5 Angola         1977  6162675 Africa       39.5     3009. 18541315838.
+ 6 Guinea         1977  4227026 Africa       40.8      875.  3697319890.
+ 7 Niger          1977  5682086 Africa       41.3      809.  4596222733.
+ 8 Mali           1977  6491649 Africa       41.7      686.  4455837164.
+ 9 Gambia         1977   608274 Africa       41.8      885.   538173615.
+10 Somalia        1977  4353666 Africa       42.0     1451.  6317136770.
+# … with 132 more rows</code></pre>
+<pre class="r"><code>gapminder %&gt;% filter(year == 1992) %&gt;% arrange(lifeExp)</code></pre>
+<pre><code># A tibble: 142 × 7
+   country          year      pop continent lifeExp gdpPercap    total_gdp
+   &lt;chr&gt;           &lt;int&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;
+ 1 Rwanda           1992  7290203 Africa       23.6      737.  5373379682.
+ 2 Sierra Leone     1992  4260884 Africa       38.3     1069.  4553590872.
+ 3 Somalia          1992  6099799 Africa       39.7      927.  5654271489.
+ 4 Angola           1992  8735988 Africa       40.6     2628. 22956828370.
+ 5 Liberia          1992  1912974 Africa       40.8      637.  1217843092.
+ 6 Afghanistan      1992 16317921 Asia         41.7      649. 10595901589.
+ 7 Guinea-Bissau    1992  1050938 Africa       43.3      746.   783516181.
+ 8 Mozambique       1992 13160731 Africa       44.3      411.  5407702568.
+ 9 Burundi          1992  5809236 Africa       44.7      632.  3669693671.
+10 Congo Dem. Rep.  1992 41672143 Africa       45.5      458. 19074139152.
+# … with 132 more rows</code></pre>
+<p>It looks like the minimum life expectancy for 1977 is Cambodia at
+31.2 years, and for 1992 is Rwanda at 23.6 years. This highlights
+something about our plot that perhaps we didn’t consider before. The
+y-axis is not from 0 to 80, but is actually from 20 to 80. Ggplot2 has
+made a choice about the y-axis limits that might have slipped past our
+noticing.</p>
 </div>
 <div id="saving-plots-to-file" class="section level1">
 <h1>Saving plots to file</h1>
@@ -727,7 +796,7 @@ the <code>gdp_life_plot</code>:</p>
 <div id="bar-plots" class="section level1">
 <h1>Bar plots</h1>
 <p>What if we wanted to plot the global total GDP per year as a bar
-plot, but separated by continent? Let’s first take a look at the help
+plot, separated by continent? Let’s first take a look at the help
 function for <code>geom_bar()</code>:</p>
 <pre><code>?geom_bar</code></pre>
 <p>Looking through the description:</p>
@@ -754,76 +823,107 @@ shorthand. We can use the same <code>labs()</code> function we used
 before, and specify a value for <code>fill</code>, to go with the
 <code>fill</code> parameter in <code>aes()</code> above. Let’s save this
 plot as “total_gdp_plot”.</p>
-<pre class="r"><code>total_gdp_plot = ggplot(data = gapminder, aes(x = year, y = total_gdp, fill = continent)) +
+<pre class="r"><code>ggplot(data = gapminder, aes(x = year, y = total_gdp, fill = continent)) +
     geom_col() +
-    labs(title = &#39;Global GDP Over Time (by continent)&#39;, x = &#39;Year&#39;, y = &#39;Total GDP&#39;, fill = &#39;Continent&#39;)
-total_gdp_plot</code></pre>
+    labs(title = &#39;Global GDP Over Time (by continent)&#39;, x = &#39;Year&#39;, y = &#39;Total GDP&#39;, fill = &#39;Continent&#39;)</code></pre>
 <p><img src="fig/06-barplot2-1.png" width="816" style="display: block; margin: auto;" /></p>
-</div>
-<div id="box-plots" class="section level1">
-<h1>Box plots</h1>
-<p>What if we wanted a plot to look at the distribution of populations
-of countries grouped by continents over the years? Let’s start by
-building this plot iteratively.</p>
-<pre class="r"><code>ggplot(data = gapminder, aes(x = continent, y = pop)) + geom_boxplot()</code></pre>
-<p><img src="fig/06-boxplot-1.png" width="816" style="display: block; margin: auto;" /></p>
-<p>This is a good start, but because of the wide range of populations,
-we’re having a problem seeing the distribution of values at the lower
-end. This is a perfect opportunity to change the scale of the y-axis to
-a logarithmic scale using the <code>scale_y_log10()</code> function.</p>
-<pre class="r"><code>ggplot(data = gapminder, aes(x = continent, y = pop)) + geom_boxplot() + scale_y_log10()</code></pre>
-<p><img src="fig/06-boxplot2-1.png" width="816" style="display: block; margin: auto;" /></p>
-<p>This is better, but we still have all the years lumped into each
-continent bar. We could split out the years as facets. We saw an example
-of that with <code>facet_grid()</code> above. Since we’re trying to
-compare the distributions of populations across years at a glance, it
-would probably best to facet the years horizontally.</p>
-<pre class="r"><code>ggplot(data = gapminder, aes(x = continent, y = pop)) +
-    geom_boxplot() +
-    scale_y_log10() +
-    facet_grid(. ~ year)</code></pre>
-<p><img src="fig/06-boxplot3-1.png" width="816" style="display: block; margin: auto;" /></p>
-<p>This is great, we’ve come a long way, but maybe we’d actually like
-the x-axis to be by year and the facets to be by continent. That would
-feel like a better display of the data.</p>
-<pre class="r"><code>ggplot(data = gapminder, aes(x = year, y = pop)) +
-    geom_boxplot() +
-    scale_y_log10() +
-    facet_grid(. ~ continent)</code></pre>
-<pre><code>Warning: Continuous x aesthetic
-ℹ did you forget `aes(group = ...)`?</code></pre>
-<p><img src="fig/06-boxplot4-1.png" width="816" style="display: block; margin: auto;" /></p>
-<p>That’s an interesting warning. Because year is considered a numeric,
-we’re not really getting what we’d like. ggplot is helpfully suggesting
-adding <code>group = year</code>.</p>
-<pre class="r"><code>ggplot(data = gapminder, aes(x = year, y = pop, group = year)) +
-    geom_boxplot() +
-    scale_y_log10() +
-    facet_grid(. ~ continent)</code></pre>
-<p><img src="fig/06-boxplot5-1.png" width="816" style="display: block; margin: auto;" /></p>
-<p>That feels like closer to what we intended. It also has the benefit
-of being beautiful in a way.</p>
-<div id="rotating-axis-labels" class="section level2">
-<h2>Rotating axis labels</h2>
-<p>You will very likely discover in the course of making plots that the
-axis labels may collide with one another, and that rotating the labels
-would make for a better plot. Let’s modify the plot we just made to
-rotate the years by 45 degrees. But where to start? Typically the answer
-for ggplot questions is to search the internet and look at example code.
-Let’s do just that. Let’s search for “how to rotate axis labels in
-ggplot”.</p>
-<p>…</p>
-<p>It looks like a possible solution is to add</p>
-<pre class="r"><code>theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))</code></pre>
-<p>Let’s give it a shot:</p>
-<pre class="r"><code>ggplot(data = gapminder, aes(x = year, y = pop, group = year)) +
-    geom_boxplot() +
-    scale_y_log10() +
-    facet_grid(. ~ continent) +
-    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))</code></pre>
-<p><img src="fig/06-boxplot6-1.png" width="816" style="display: block; margin: auto;" /></p>
-<p>Perfect!</p>
-</div>
+<p>Let’s try to verify that these figures actually make sense. First
+let’s introduce the idea of <code>position = 'dodge'</code> where the
+different categories are plotted side-by-side rather than stacked, as
+above.</p>
+<pre class="r"><code>p1 = ggplot(data = gapminder, aes(x = year, y = total_gdp, fill = continent)) +
+    geom_col(position = &#39;dodge&#39;) +
+    labs(title = &#39;Global GDP Over Time (by continent)&#39;, x = &#39;Year&#39;, y = &#39;Total GDP&#39;, fill = &#39;Continent&#39;)
+p1</code></pre>
+<p><img src="fig/06-barplot-dodge-1.png" width="816" style="display: block; margin: auto;" /></p>
+<p>This plot is theoretically giving us a sense for aggregate Total GDP
+by continent per year, but we could also get this data using the
+<code>group_by()</code> and <code>summarize()</code> functions.</p>
+<pre class="r"><code>gdp_by_continent_year = gapminder %&gt;% group_by(continent, year) %&gt;% summarize(aggregate_gdp = sum(total_gdp))</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;continent&#39;. You can override using the `.groups` argument.</code></pre>
+<p>In particular, let’s look at the Americas and Asia in turn:</p>
+<pre class="r"><code>gdp_by_continent_year %&gt;% filter(continent == &#39;Americas&#39;)</code></pre>
+<pre><code># A tibble: 12 × 3
+# Groups:   continent [1]
+   continent  year aggregate_gdp
+   &lt;chr&gt;     &lt;int&gt;         &lt;dbl&gt;
+ 1 Americas   1952       2.94e12
+ 2 Americas   1957       3.52e12
+ 3 Americas   1962       4.23e12
+ 4 Americas   1967       5.45e12
+ 5 Americas   1972       6.70e12
+ 6 Americas   1977       8.10e12
+ 7 Americas   1982       9.08e12
+ 8 Americas   1987       1.10e13
+ 9 Americas   1992       1.22e13
+10 Americas   1997       1.46e13
+11 Americas   2002       1.65e13
+12 Americas   2007       1.94e13</code></pre>
+<p>Matching these numbers to the plot is a little cumbersome, but we
+could take advantage of our saved plot object above to quickly add
+horizontal lines at the values and see if they match. For example, let’s
+plot a horizontal line at 1.22e13 and see if it intersects around 1992,
+like we would expect.</p>
+<pre class="r"><code>p1 + geom_hline(yintercept = 1.22e13)</code></pre>
+<p><img src="fig/06-americas-check-1.png" width="816" style="display: block; margin: auto;" /></p>
+<p>This doesn’t appear to be correct, because the horizontal line
+intersects our data for the last year, 2007, when according to our
+summarization, should occur in 1992. So ggplot2 is doing something
+unexpected here, and it doesn’t seem correct.</p>
+<p>However, we’ve already summarized the GDP by continent by year in our
+<code>gdp_by_continent_by_year</code> object, so let’s use that as the
+basis for a plot instead.</p>
+<pre class="r"><code>p2 = ggplot(data = gdp_by_continent_year, aes(x = year, y = aggregate_gdp, fill = continent)) +
+    geom_col(position = &#39;dodge&#39;) +
+    labs(title = &#39;Global GDP Over Time (by continent)&#39;, x = &#39;Year&#39;, y = &#39;Total GDP&#39;, fill = &#39;Continent&#39;)</code></pre>
+<p>And now let’s add that horizontal line and see if things make sense
+now:</p>
+<pre class="r"><code>p2 + geom_hline(yintercept = 1.22e13)</code></pre>
+<p><img src="fig/06-barplot-dodge-line-1.png" width="816" style="display: block; margin: auto;" /></p>
+<p>Indeed, that makes a lot more sense. Moreover, if we look at the data
+for Asia, we see in 2007 that we just reach over 2 trillion.</p>
+<pre class="r"><code>gdp_by_continent_year %&gt;% filter(continent == &#39;Asia&#39;)</code></pre>
+<pre><code># A tibble: 12 × 3
+# Groups:   continent [1]
+   continent  year aggregate_gdp
+   &lt;chr&gt;     &lt;int&gt;         &lt;dbl&gt;
+ 1 Asia       1952       1.13e12
+ 2 Asia       1957       1.56e12
+ 3 Asia       1962       1.98e12
+ 4 Asia       1967       2.79e12
+ 5 Asia       1972       4.10e12
+ 6 Asia       1977       5.27e12
+ 7 Asia       1982       6.42e12
+ 8 Asia       1987       7.98e12
+ 9 Asia       1992       1.01e13
+10 Asia       1997       1.28e13
+11 Asia       2002       1.51e13
+12 Asia       2007       2.07e13</code></pre>
+<p>And now if we want to stack the bars again, we can do that:</p>
+<pre class="r"><code>ggplot(data = gdp_by_continent_year, aes(x = year, y = aggregate_gdp, fill = continent)) +
+    geom_col(position = &#39;stack&#39;) +
+    labs(title = &#39;Global GDP Over Time (by continent)&#39;, x = &#39;Year&#39;, y = &#39;Total GDP&#39;, fill = &#39;Continent&#39;)</code></pre>
+<p><img src="fig/06-barplot-stack-1.png" width="816" style="display: block; margin: auto;" /></p>
+<p>And if we want to make sure we’re approaching Global GDP of $6
+trillion, we can again, <code>group_by()</code> and
+<code>summarize()</code>:</p>
+<pre class="r"><code>gdp_by_continent_year %&gt;% group_by(year) %&gt;% summarize(aggregate_yearly_gdp = sum(aggregate_gdp))</code></pre>
+<pre><code># A tibble: 12 × 2
+    year aggregate_yearly_gdp
+   &lt;int&gt;                &lt;dbl&gt;
+ 1  1952              7.04e12
+ 2  1957              8.90e12
+ 3  1962              1.10e13
+ 4  1967              1.42e13
+ 5  1972              1.84e13
+ 6  1977              2.23e13
+ 7  1982              2.54e13
+ 8  1987              3.01e13
+ 9  1992              3.45e13
+10  1997              4.10e13
+11  2002              4.73e13
+12  2007              5.81e13</code></pre>
+<p>Which looks correct!</p>
 </div>
 <div id="summary" class="section level1">
 <h1>Summary</h1>
@@ -845,16 +945,18 @@ ggplot2:</p>
 <li><code>geom_point()</code></li>
 <li><code>geom_line()</code></li>
 <li><code>geom_bar()</code> and <code>geom_col()</code></li>
-<li><code>geom_boxplot()</code></li>
 </ul>
-<p>And we explored various customizations:</p>
+<p>We explored various customizations:</p>
 <ul>
 <li>Color palettes</li>
 <li>Plot, axis, and legend titles</li>
-<li>Axis label rotation</li>
 </ul>
-<p>And we explored how to save our plots in different formats and
+<p>We explored how to save our plots in different formats and
 resolutions to ensure publication quality graphics.</p>
+<p>Finally, we learned the importance of verifying plots of data by
+making corresponding transformations and syncing up the results. In
+essence, having a data artifact that is in one-to-one correspondence
+with a plot can help in the explanatory and troubleshooting process.</p>
 </div>
 <div id="resources" class="section level1">
 <h1>Resources</h1>

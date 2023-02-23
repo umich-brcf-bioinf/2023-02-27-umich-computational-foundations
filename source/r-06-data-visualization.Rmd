@@ -200,6 +200,21 @@ gdp_life_plot <- ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color 
 gdp_life_plot
 ```
 
+In this plot it looks like there are some outlier countries with very high GDP per capita, with mid-range life expectancy. How can we figure out what those countries might be? We have the `gapminder` data, and we've learned previously how to `filter()` the data based on certain conditions, so let's practice and see if we can find those outliers.
+
+> ## Exercise
+>
+> Use the `filter()` function on the `gapminder` data to help determine what four countries lie furthest to the right in the above plot.
+
+<details>
+<summary>Solution</summary>
+```{r outlier-finding-1, purl=FALSE}
+gapminder %>% filter(gdpPercap > 90000)
+```
+So Kuwait, in the years 1952, 1957, 1962, and 1972 are the outliers. With this exercise we've also done a quick sanity check on the plot. We implicitly verified three pieces of information: the outliers are considered "Asian" countries so the color is correct, the life expectencies match what is plotted, and so does the GDP per capita.
+</details>
+<br>
+
 ### Faceting
 
 `ggplot2` has a special technique called *faceting* that allows us to split one plot into multiple plots based on a factor in the data. Let's use it to split our plot into five panels, one for each continent.
@@ -282,7 +297,18 @@ life_over_time_plot <- ggplot(data = gapminder, aes(x = year, y = lifeExp, color
 life_over_time_plot
 ```
 
-Voila, we've got ourselves a spaghetti plot.
+And now we have a spaghetti plot!
+
+As we did with the GDP per capita vs Life expectancy plot above, let's reach into the `gapminder` data and sanity check some of the outliers we see in this plot. It looks like there were two serious dips in life expectancy for two countries. One in 1977 and one in 1992. Let's see if we can figure out what countries those are.
+
+Starting with 1977, we might filter on that year, and then order the life expectancy, looking for the lowest value.
+
+```{r outlier-finding-2}
+gapminder %>% filter(year == 1977) %>% arrange(lifeExp)
+gapminder %>% filter(year == 1992) %>% arrange(lifeExp)
+```
+
+It looks like the minimum life expectancy for 1977 is Cambodia at 31.2 years, and for 1992 is Rwanda at 23.6 years. This highlights something about our plot that perhaps we didn't consider before. The y-axis is not from 0 to 80, but is actually from 20 to 80. Ggplot2 has made a choice about the y-axis limits that might have slipped past our noticing.
 
 # Saving plots to file
 
@@ -302,7 +328,7 @@ ggsave(filename = 'gdp_life_plot.png', plot = gdp_life_plot, width = 6, height =
 
 # Bar plots
 
-What if we wanted to plot the global total GDP per year as a bar plot, but separated by continent? Let's first take a look at the help function for `geom_bar()`:
+What if we wanted to plot the global total GDP per year as a bar plot, separated by continent? Let's first take a look at the help function for `geom_bar()`:
 
 ~~~
 ?geom_bar
@@ -322,78 +348,75 @@ ggplot(data = gapminder, aes(x = year, y = total_gdp, fill = continent)) + geom_
 This is a good start, and from previous examples we know how we might alter the x and y axis labels, but how can we edit the legend title? This is a common task when creating publication figures because the legend title will inherit the name of the column, which is usually some shorthand. We can use the same `labs()` function we used before, and specify a value for `fill`, to go with the `fill` parameter in `aes()` above. Let's save this plot as "total_gdp_plot".
 
 ```{r barplot2, purl=FALSE}
-total_gdp_plot = ggplot(data = gapminder, aes(x = year, y = total_gdp, fill = continent)) +
+ggplot(data = gapminder, aes(x = year, y = total_gdp, fill = continent)) +
     geom_col() +
     labs(title = 'Global GDP Over Time (by continent)', x = 'Year', y = 'Total GDP', fill = 'Continent')
-total_gdp_plot
 ```
 
-# Box plots
+Let's try to verify that these figures actually make sense. First let's introduce the idea of `position = 'dodge'` where the different categories are plotted side-by-side rather than stacked, as above.
 
-What if we wanted a plot to look at the distribution of populations of countries grouped by continents over the years? Let's start by building this plot iteratively.
-
-```{r boxplot, purl = FALSE}
-ggplot(data = gapminder, aes(x = continent, y = pop)) + geom_boxplot()
+```{r barplot-dodge, purl = FALSE}
+p1 = ggplot(data = gapminder, aes(x = year, y = total_gdp, fill = continent)) +
+    geom_col(position = 'dodge') +
+    labs(title = 'Global GDP Over Time (by continent)', x = 'Year', y = 'Total GDP', fill = 'Continent')
+p1
 ```
 
-This is a good start, but because of the wide range of populations, we're having a problem seeing the distribution of values at the lower end. This is a perfect opportunity to change the scale of the y-axis to a logarithmic scale using the `scale_y_log10()` function.
+This plot is theoretically giving us a sense for aggregate Total GDP by continent per year, but we could also get this data using the `group_by()` and `summarize()` functions.
 
-```{r boxplot2, purl = FALSE}
-ggplot(data = gapminder, aes(x = continent, y = pop)) + geom_boxplot() + scale_y_log10()
+```{r group-summarize, purl = FALSE}
+gdp_by_continent_year = gapminder %>% group_by(continent, year) %>% summarize(aggregate_gdp = sum(total_gdp))
 ```
 
-This is better, but we still have all the years lumped into each continent bar. We could split out the years as facets. We saw an example of that with `facet_grid()` above. Since we're trying to compare the distributions of populations across years at a glance, it would probably best to facet the years horizontally.
+In particular, let's look at the Americas and Asia in turn:
 
-```{r boxplot3, purl = FALSE}
-ggplot(data = gapminder, aes(x = continent, y = pop)) +
-    geom_boxplot() +
-    scale_y_log10() +
-    facet_grid(. ~ year)
+```{r america, purl = FALSE}
+gdp_by_continent_year %>% filter(continent == 'Americas')
 ```
 
-This is great, we've come a long way, but maybe we'd actually like the x-axis to be by year and the facets to be by continent. That would feel like a better display of the data.
+Matching these numbers to the plot is a little cumbersome, but we could take advantage of our saved plot object above to quickly add horizontal lines at the values and see if they match. For example, let's plot a horizontal line at 1.22e13 and see if it intersects around 1992, like we would expect.
 
-```{r boxplot4, purl = FALSE}
-ggplot(data = gapminder, aes(x = year, y = pop)) +
-    geom_boxplot() +
-    scale_y_log10() +
-    facet_grid(. ~ continent)
+```{r americas-check, purl = FALSE}
+p1 + geom_hline(yintercept = 1.22e13)
 ```
 
-That's an interesting warning. Because year is considered a numeric, we're not really getting what we'd like. ggplot is helpfully suggesting adding `group = year`.
+This doesn't appear to be correct, because the horizontal line intersects our data for the last year, 2007, when according to our summarization, should occur in 1992. So ggplot2 is doing something unexpected here, and it doesn't seem correct.
 
-```{r boxplot5, purl = FALSE}
-ggplot(data = gapminder, aes(x = year, y = pop, group = year)) +
-    geom_boxplot() +
-    scale_y_log10() +
-    facet_grid(. ~ continent)
+However, we've already summarized the GDP by continent by year in our `gdp_by_continent_by_year` object, so let's use that as the basis for a plot instead.
+
+```{r barplot-dodge2, purl = FALSE}
+p2 = ggplot(data = gdp_by_continent_year, aes(x = year, y = aggregate_gdp, fill = continent)) +
+    geom_col(position = 'dodge') +
+    labs(title = 'Global GDP Over Time (by continent)', x = 'Year', y = 'Total GDP', fill = 'Continent')
 ```
 
-That feels like closer to what we intended. It also has the benefit of being beautiful in a way.
+And now let's add that horizontal line and see if things make sense now:
 
-## Rotating axis labels
-
-You will very likely discover in the course of making plots that the axis labels may collide with one another, and that rotating the labels would make for a better plot. Let's modify the plot we just made to rotate the years by 45 degrees. But where to start? Typically the answer for ggplot questions is to search the internet and look at example code. Let's do just that. Let's search for "how to rotate axis labels in ggplot".
-
-...
-
-It looks like a possible solution is to add
-
-```{r, eval = FALSE}
-theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+```{r barplot-dodge-line, purl = FALSE}
+p2 + geom_hline(yintercept = 1.22e13)
 ```
 
-Let's give it a shot:
+Indeed, that makes a lot more sense. Moreover, if we look at the data for Asia, we see in 2007 that we just reach over 2 trillion.
 
-```{r boxplot6, purl = FALSE}
-ggplot(data = gapminder, aes(x = year, y = pop, group = year)) +
-    geom_boxplot() +
-    scale_y_log10() +
-    facet_grid(. ~ continent) +
-    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+```{r asia-subset, purl = FALSE}
+gdp_by_continent_year %>% filter(continent == 'Asia')
 ```
 
-Perfect!
+And now if we want to stack the bars again, we can do that:
+
+```{r barplot-stack, purl = FALSE}
+ggplot(data = gdp_by_continent_year, aes(x = year, y = aggregate_gdp, fill = continent)) +
+    geom_col(position = 'stack') +
+    labs(title = 'Global GDP Over Time (by continent)', x = 'Year', y = 'Total GDP', fill = 'Continent')
+```
+
+And if we want to make sure we're approaching Global GDP of $6 trillion, we can again, `group_by()` and `summarize()`:
+
+```{r verify-gdp, purl = FALSE}
+gdp_by_continent_year %>% group_by(year) %>% summarize(aggregate_yearly_gdp = sum(aggregate_gdp))
+```
+
+Which looks correct!
 
 # Summary
 
@@ -414,15 +437,15 @@ We've introduced a number of specific geometries:
 - `geom_point()`
 - `geom_line()`
 - `geom_bar()` and `geom_col()`
-- `geom_boxplot()`
 
-And we explored various customizations:
+We explored various customizations:
 
 - Color palettes
 - Plot, axis, and legend titles
-- Axis label rotation
 
-And we explored how to save our plots in different formats and resolutions to ensure publication quality graphics.
+We explored how to save our plots in different formats and resolutions to ensure publication quality graphics.
+
+Finally, we learned the importance of verifying plots of data by making corresponding transformations and syncing up the results. In essence, having a data artifact that is in one-to-one correspondence with a plot can help in the explanatory and troubleshooting process.
 
 # Resources
 
