@@ -56,13 +56,12 @@ recognize these techniques when you see them and, with some independent study, a
 
 
 ## About the workshop team
-| ![](images/Module00_headshots/headshot_cgates.jpg) | ![](images/Module00_headshots/headshot_mbradenb.jpg) | ![](images/Module00_headshots/headshot_rcavalca.jpg) |
-|:-:|:-:|:-:|
-| **Chris** | **Marci** | **Raymond** |
-| ![](images/Module00_headshots/headshot_trsaari.jpg) | ![](images/Module00_headshots/headshot_jrhemama.jpg) |
-| **Travis** | **Rhema** |
-<!--![](images/Module00_headshots/headshot_diaorch.jpg) | ![](images/Module00_headshots/headshot_damki.jpg)-->
-<!--**Rucheng** |  **Dana**  |-->
+| ![](images/Module00_headshots/headshot_cgates.jpg) | ![](images/Module00_headshots/headshot_mbradenb.jpg) | ![](images/Module00_headshots/headshot_rcavalca.jpg) | ![](images/Module00_headshots/headshot_trsaari.jpg) | 
+|:-:|:-:|:-:|:-:|
+| **Chris** | **Marci** | **Raymond** | **Travis** |
+![](images/Module00_headshots/headshot_jrhemama.jpg) | ![](images/Module00_headshots/headshot_diaorch.jpg) | ![](images/Module00_headshots/headshot_damki.jpg)
+| **Rhema** | **Rucheng** |**Dana**|
+
 <br/>
 
 
@@ -204,6 +203,14 @@ It is important that you can see:
 
 ![](images/Module00_sponsor_logos.png)
 
+## [University of Michigan Library](https://www.lib.umich.edu/research-and-scholarship){target="_blank"}
+
+  Our mission is to support, enhance, and collaborate in the instructional, research, and
+  service activities of faculty, students, and staff, and contribute to the common good by
+  collecting, organizing, preserving, communicating, sharing, and creating the record of human
+  knowledge.
+
+
 ## [UM BRCF Bioinformatics Core](https://brcf.medicine.umich.edu/bioinformatics){target="_blank"}
 
 - The University of Michigan BRCF Bioinformatics Core is a team of analysts that help
@@ -214,12 +221,6 @@ It is important that you can see:
 - We provide letters of support for grant proposals.
 - We are creating a series of bioinformatics-focused workshops.
 
-## [University of Michigan Library](https://www.lib.umich.edu/){target="_blank"}
-
-  Our mission is to support, enhance, and collaborate in the instructional, research, and
-  service activities of faculty, students, and staff, and contribute to the common good by
-  collecting, organizing, preserving, communicating, sharing, and creating the record of human
-  knowledge.
 
 ## [Biomedical Research Core Facilities](https://brcf.medicine.umich.edu/){target="_blank"}
 
